@@ -1,0 +1,10 @@
+package com.app.controllers;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
+import com.app.dto.EbookDto;
+
+public class IBookController {
+	 ResponseEntity<String> uploadBook(@ModelAttribute("epubFile") EbookDto ebookDto);
+}

@@ -1,0 +1,17 @@
+package com.app.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.app.entities.User;
+import com.app.repositories.UserRepository;
+
+public class UserServiceImpl  implements UserService{
+@Autowired
+private UserRepository userRepo;
+	@Override
+	public User userLogin(User user) {
+		
+		return userRepo.save(user);
+	}
+
+}

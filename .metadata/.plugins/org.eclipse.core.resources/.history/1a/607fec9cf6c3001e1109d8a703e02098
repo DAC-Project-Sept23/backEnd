@@ -1,0 +1,18 @@
+package com.app.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.app.dto.UserDto;
+import com.app.entities.User;
+import com.app.repositories.UserRepository;
+
+public class UserServiceImpl  implements UserService{
+@Autowired
+private UserRepository userRepo;
+	@Override
+	public User userLogin(UserDto user) {
+		User u = new User(user.getFirstName(),user.getLastName(),user.getEmail(),user.getRole(),user.getPassword(),user.getDob());
+		return userRepo.save(u);
+	}
+
+}

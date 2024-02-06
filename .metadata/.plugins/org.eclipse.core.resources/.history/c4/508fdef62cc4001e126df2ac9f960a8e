@@ -1,0 +1,26 @@
+package com.app.config;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+public class SecurityConfig {
+
+    @Autowired
+    private PasswordEncoder enc;
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+                .antMatchers("/users/signup").permitAll()
+                .anyRequest().authenticated()
+                .and()
+            .csrf().disable();
+        
+        return http.build();
+    }
+}
+
+

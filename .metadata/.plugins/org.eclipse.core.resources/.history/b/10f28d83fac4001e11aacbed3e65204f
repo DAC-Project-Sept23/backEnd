@@ -1,0 +1,21 @@
+package com.app.services;
+
+import java.io.IOException;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import com.app.dto.EbookDto;
+import com.app.dto.GetEbookDto;
+import com.app.entities.Genre;
+
+public interface BookService {
+	ResponseEntity<String> uploadBook(EbookDto ebook)
+			throws IOException;
+	
+	ResponseEntity<List<GetEbookDto>> getAllBooks() throws IOException;
+
+	
+
+	
+	ResponseEntity<List<GetEbookDto>> getAllBooksGenre(Genre genre);
+}

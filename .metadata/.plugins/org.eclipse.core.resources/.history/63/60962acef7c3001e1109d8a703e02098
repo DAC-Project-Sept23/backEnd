@@ -1,0 +1,29 @@
+package com.app.controllers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.app.dto.UserDto;
+import com.app.dto.UserResult;
+import com.app.entities.User;
+import com.app.services.UserService;
+
+@RestController
+public class UserController {
+@Autowired
+private UserService userService;
+
+public ResponseEntity<UserResult> userSignup(@RequestBody UserDto user) {
+	User u=userService.userSignup(user);
+	 if(u!=null) {
+		 UserResult result = new UserResult(u, true, "SignUp Successful");
+		 return new ResponseEntity<UserResult>(result,HttpStatus.CREATED);
+	 }
+	 String errorMessage = "Failed to authenticate. Please check your credentials.";
+     UserResult userResult = new UserResult(null, false, errorMessage);
+	 return new ResponseEntity<>(userResult,HttpStatus.UNAUTHORIZED);
+}
+}

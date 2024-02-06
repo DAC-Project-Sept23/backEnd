@@ -1,0 +1,18 @@
+package com.app.controllers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.app.entities.User;
+import com.app.services.UserService;
+
+@RestController
+public class UserController {
+@Autowired
+private UserService userService;
+
+public String userLogin(@RequestBody User user) {
+	
+}
+}

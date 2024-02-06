@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aop-reference-model>
+<aop-project name="spring_boot_backend_security_jwt_template"/>
+<aop-project name="spring_boot_backend_template"/>
+</aop-reference-model>
