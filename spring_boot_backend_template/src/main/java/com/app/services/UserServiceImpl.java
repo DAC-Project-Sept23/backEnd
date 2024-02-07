@@ -27,6 +27,7 @@ private ModelMapper mapper;
 		
 		
 		if (u != null) {
+			userRepo.save(u);
 			UserResult result = new UserResult(u, true, "SignUp Successful");
 			return new ResponseEntity<UserResult>(result, HttpStatus.CREATED);
 		}

@@ -38,17 +38,24 @@ public class Ebook extends BaseEntity {
 	private String filePath;
 	@Column(name = "images_path")
 	private String imagePath;
+	@Column(name = "added_on")
+	private Timestamp addedOn;//upload
 	@Column
     private boolean isRemoved;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name="is_approved",length=20)
-	private IsApproved isApproved;
+	@Column(name="status",length=20)
+	private Status status;
 	
 	@ManyToOne
 	@JoinColumn(name="approved_by")
 	private User approvedBy;
-	private Timestamp timestamp;
+	
+	//Approved Time Stamp
+	
+	@Column(name = "approved_on")
+	private Timestamp approvedOn;
+	
 	//(String, Genre, String, double, String, String) is undefined
 	public Ebook( String title, Genre genre, String description, double price, String filePath,
 			String imagePath) {
@@ -63,7 +70,7 @@ public class Ebook extends BaseEntity {
         long currentSeconds = Instant.now().getEpochSecond();
 
         // Create a Timestamp without milliseconds
-        this.timestamp = new Timestamp(currentSeconds * 1000);
+        this.addedOn = new Timestamp(currentSeconds * 1000);
 	}
 	public Ebook(User user, String title, Genre genre, String description, double price, String filePath,
 			String imagePath) {

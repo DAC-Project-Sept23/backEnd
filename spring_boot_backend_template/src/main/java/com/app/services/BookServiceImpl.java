@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -75,14 +77,17 @@ public class BookServiceImpl implements BookService {
 		Path baseDirPath = Paths.get(currentWorkingDir);
 		System.out.println("BaseDir Path : "+baseDirPath.toString());           // Base dir abs path --> E:\CDAC\Project\spring_boot_backend_template
 		Path relativeEpubPath = baseDirPath.relativize(Paths.get(epubFilePath));//  epub file abs path --> E:\CDAC\Project\spring_boot_backend_template\ uploaded_files\books\epub_1707245561300.epub  
+		
 		//Path java.nio.file.Path.relativize(Path other)-->Constructs a relative path between this path and a given path
         //Compare the this path with given path and return a relative path
 		System.out.println("Relative path Path : "+relativeEpubPath.toString());//  uploaded_files\books\epub_1707245451821.epub
 		Path relativeCoverImagePath = baseDirPath.relativize(Paths.get(coverImagePath));
 
 		User u = userRepo.findById(ebook.getUserId()).orElseThrow();
+		
 		Ebook b = new Ebook(u, ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(),
 				relativeEpubPath.toString(), relativeCoverImagePath.toString());
+		b.setAddedOn(new Timestamp(Instant.now().getEpochSecond()* 1000));
 		bookRepo.save(b);
 
 		return ResponseEntity.ok("Book uploaded successfully.");
@@ -153,16 +158,16 @@ public class BookServiceImpl implements BookService {
 		return getAllBooksInternal(bookRepo.getAllByUserId(userId));
 	}
 
-	@Override
-	public ResponseEntity<List<GetAllEbookDto>> getAllNonApprovedBooks() {
-
-		return getAllBooksInternal(bookRepo.findByIsApprovedFalse());
-	}
-
-	@Override
-	public ResponseEntity<List<GetAllEbookDto>> getAllApprovedBooks() {
-
-		return getAllBooksInternal(bookRepo.findByIsApprovedTrue());
-	}
+//	@Override
+//	public ResponseEntity<List<GetAllEbookDto>> getAllNonApprovedBooks() {
+//
+//		return getAllBooksInternal(bookRepo.findByIsApprovedFalse());
+//	}
+//
+//	@Override
+//	public ResponseEntity<List<GetAllEbookDto>> getAllApprovedBooks() {
+//
+//		return getAllBooksInternal(bookRepo.findByIsApprovedTrue());
+//	}
 
 }

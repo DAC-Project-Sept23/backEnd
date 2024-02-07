@@ -24,7 +24,7 @@ public interface BookService {
 
 	ResponseEntity<List<GetAllEbookDto>> getBookByUserId(Long userid);
 
-	ResponseEntity<List<GetAllEbookDto>> getAllNonApprovedBooks();
-
-	ResponseEntity<List<GetAllEbookDto>> getAllApprovedBooks();
+//	ResponseEntity<List<GetAllEbookDto>> getAllNonApprovedBooks();
+//
+//	ResponseEntity<List<GetAllEbookDto>> getAllApprovedBooks();
 }
