@@ -38,8 +38,13 @@ public class Ebook extends BaseEntity {
 	private String filePath;
 	@Column(name = "images_path")
 	private String imagePath;
-	@Column(columnDefinition = "TINYINT(1) default 0")
-    private boolean isApproved;
+	@Column
+    private boolean isRemoved;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="is_approved",length=20)
+	private IsApproved isApproved;
+	
 	@ManyToOne
 	@JoinColumn(name="approved_by")
 	private User approvedBy;
