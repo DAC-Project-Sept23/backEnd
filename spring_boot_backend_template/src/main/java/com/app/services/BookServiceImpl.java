@@ -23,6 +23,7 @@ import com.app.dto.GetAllEbookDto;
 import com.app.dto.GetEbookDto;
 import com.app.entities.Ebook;
 import com.app.entities.Genre;
+import com.app.entities.Status;
 import com.app.entities.User;
 import com.app.repositories.BookRepository;
 import com.app.repositories.UserRepository;
@@ -117,7 +118,7 @@ public class BookServiceImpl implements BookService {
 		try {
 			byte[] coverImageContent = FileUtils.readFileToByteArray(new File(ebook.getImagePath()));
 
-			return new GetAllEbookDto(ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(),
+			return new GetAllEbookDto(ebook.getId(),ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(),
 					coverImageContent);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -158,16 +159,22 @@ public class BookServiceImpl implements BookService {
 		return getAllBooksInternal(bookRepo.getAllByUserId(userId));
 	}
 
-//	@Override
-//	public ResponseEntity<List<GetAllEbookDto>> getAllNonApprovedBooks() {
-//
-//		return getAllBooksInternal(bookRepo.findByIsApprovedFalse());
-//	}
-//
-//	@Override
-//	public ResponseEntity<List<GetAllEbookDto>> getAllApprovedBooks() {
-//
-//		return getAllBooksInternal(bookRepo.findByIsApprovedTrue());
-//	}
+	@Override
+	public ResponseEntity<List<GetAllEbookDto>> getAllNonApprovedBooks() {
+
+		return getAllBooksInternal(bookRepo.findByStatus(Status.REJECTED));
+	}
+
+	@Override
+	public ResponseEntity<List<GetAllEbookDto>> getAllApprovedBooks() {
+System.out.println(bookRepo.findByStatus(Status.APPROVED));
+		return getAllBooksInternal(bookRepo.findByStatus(Status.APPROVED));
+	}
+	
+	@Override
+	public ResponseEntity<List<GetAllEbookDto>> getAllPendingBooks() {
+
+		return getAllBooksInternal(bookRepo.findByStatus(Status.PENDING));
+	}
 
 }

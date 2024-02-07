@@ -10,6 +10,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +28,8 @@ import lombok.ToString;
 @ToString
 @Table(name = "ebooks")
 public class Ebook extends BaseEntity {
-	
+	@JsonProperty(access = Access.READ_ONLY)
+	Long id;
 	@ManyToOne
 	@JoinColumn(name = "user_id")   
 	private User user;
@@ -82,6 +87,7 @@ public class Ebook extends BaseEntity {
 		this.price = price;
 		this.filePath = filePath;
 		this.imagePath = imagePath;
+		this.status=Status.PENDING;
 	
 	}
 	

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dto.admDto;
-import com.app.entities.Status;
+
 import com.app.services.AdminService;
 
 

@@ -77,17 +77,24 @@ public class BookController {
 
 	}
 	
-//	@GetMapping("/getAllNonApprovedBooks")
-//	public ResponseEntity<List<GetAllEbookDto>> getAllNonApprovedBooks() {
-//
-//		return bookService.getAllNonApprovedBooks();
-//
-//	}@GetMapping("/getAllNApprovedBooks")
-//	public ResponseEntity<List<GetAllEbookDto>> getAllApprovedBooks() {
-//
-//		return bookService.getAllApprovedBooks();
-//
-//	}
+	@GetMapping("/NonApprovedBooks")
+	public ResponseEntity<List<GetAllEbookDto>> getAllNonApprovedBooks() {
+
+		return bookService.getAllNonApprovedBooks();
+
+	}
+	@GetMapping("/ApprovedBooks")
+	public ResponseEntity<List<GetAllEbookDto>> getAllApprovedBooks() {
+
+		return bookService.getAllApprovedBooks();
+
+	}
+	@GetMapping("/PendingBooks")
+	public ResponseEntity<List<GetAllEbookDto>> getAllPendingBooks() {
+
+		return bookService.getAllPendingBooks();
+
+	}
 
 	
 

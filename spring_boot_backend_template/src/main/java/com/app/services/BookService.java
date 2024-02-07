@@ -16,7 +16,7 @@ public interface BookService {
 	ResponseEntity<List<GetAllEbookDto>> getAllBooks() throws IOException;
 
 	
-
+	 ResponseEntity<List<GetAllEbookDto>> getAllPendingBooks();
 	
 	ResponseEntity<List<GetAllEbookDto>> getAllBooksGenre(Genre genre);
 
@@ -24,7 +24,7 @@ public interface BookService {
 
 	ResponseEntity<List<GetAllEbookDto>> getBookByUserId(Long userid);
 
-//	ResponseEntity<List<GetAllEbookDto>> getAllNonApprovedBooks();
-//
-//	ResponseEntity<List<GetAllEbookDto>> getAllApprovedBooks();
+     ResponseEntity<List<GetAllEbookDto>> getAllNonApprovedBooks();
+
+	ResponseEntity<List<GetAllEbookDto>> getAllApprovedBooks();
 }
