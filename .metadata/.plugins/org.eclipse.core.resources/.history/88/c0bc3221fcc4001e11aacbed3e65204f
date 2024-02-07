@@ -1,5 +1,0 @@
-package com.app.custom_exc;
-
-public class ContentNotFoundException {
-
-}

@@ -1,7 +1,0 @@
-package com.app.services;
-
-import com.app.entities.User;
-
-public interface UserService {
-String userLogin(User user);
-}
