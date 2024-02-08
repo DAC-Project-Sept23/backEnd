@@ -21,9 +21,11 @@ import com.app.services.UserService;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RequestMapping("/users")
-public class UserController {
+public class UserController{
+	
 	@Autowired
 	private UserService userService;
+	
    @PostMapping("/signup")
 	public ResponseEntity<UserResult> userSignup(@RequestBody UserDto user) {
 		return userService.userSignup(user);

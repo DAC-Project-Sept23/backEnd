@@ -20,12 +20,16 @@ import lombok.ToString;
 @Setter
 @ToString
 public class UserDto {
+	//@JsonProperty(access = Access.READ_ONLY)
+	@JsonIgnore
+	private Long Id;
+	
 	private String firstName;
 	private String lastName;
 	private String email;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dob;
-	@JsonProperty(access = Access.READ_ONLY)
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	private Role role;
 

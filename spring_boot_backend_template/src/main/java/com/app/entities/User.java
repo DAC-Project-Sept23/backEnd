@@ -8,6 +8,9 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +25,8 @@ import lombok.ToString;
 @Setter
 @Table(name = "users")
 public class User extends BaseEntity {
-	
+	@JsonProperty(access = Access.READ_ONLY)
+	Long id;
 	@Column(name="first_name")
 	private String firstName;
 	@Column(name="last_name")

@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
 private ModelMapper mapper;
 	@Override
 	public ResponseEntity<UserResult> userSignup(UserDto user) {
-		User u = new User(user.getFirstName(), user.getLastName(), user.getEmail(), user.getRole(), user.getPassword(),
+		User u = new User(user.getId(),user.getFirstName(), user.getLastName(), user.getEmail(), user.getRole(), user.getPassword(),
 				user.getDob());
 		
 		

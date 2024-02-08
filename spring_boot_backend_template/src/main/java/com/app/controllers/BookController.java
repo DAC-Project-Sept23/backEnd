@@ -31,6 +31,7 @@ public class BookController {
 	// upload epub---> //String title, Genre genre, String description, double
 	// price, MultipartFile epubFile,
 	// MultipartFile coverImage
+	
 	@PostMapping(value = "/upload", consumes = "multipart/form-data")
 	public ResponseEntity<String> uploadBook(@ModelAttribute("epubFile") EbookDto ebookDto) {
 		System.out.println("in upload book method");
@@ -45,51 +46,42 @@ public class BookController {
 
 	// Get all books//(String title, Genre genre, String description, double price,
 	// byte[] epubFileContent, byte[] coverImageContent)
-	@GetMapping
-	public ResponseEntity<List<GetAllEbookDto>> getAllBooks() {
-		try {
-			return bookService.getAllBooks();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
 
-	@GetMapping("/getByGenre")
+
+	@GetMapping("/genre")
 	public ResponseEntity<List<GetAllEbookDto>> getAllBooksByGenre(@RequestParam Genre genre) {
 
 		return bookService.getAllBooksGenre(genre);
 
 	}
 	
-	@GetMapping("/getById/{id}")
+	@GetMapping("/read/{id}")
 	public ResponseEntity<GetEbookDto> getByBookId(@PathVariable Long id) {
 
 		return bookService.getByBookId(id);
 
 	}
 	
-	@GetMapping("/getByUserId/{userId}")
+	@GetMapping("/user/{userId}")
 	public ResponseEntity<List<GetAllEbookDto>> getBooksByUserId(@PathVariable Long userId) {
 
 		return bookService.getBookByUserId(userId);
 
 	}
 	
-	@GetMapping("/NonApprovedBooks")
+	@GetMapping("/rejected")
 	public ResponseEntity<List<GetAllEbookDto>> getAllNonApprovedBooks() {
 
-		return bookService.getAllNonApprovedBooks();
+		return bookService.getAllRejectedBooks();
 
 	}
-	@GetMapping("/ApprovedBooks")
+	@GetMapping("/approved")
 	public ResponseEntity<List<GetAllEbookDto>> getAllApprovedBooks() {
 
 		return bookService.getAllApprovedBooks();
 
 	}
-	@GetMapping("/PendingBooks")
+	@GetMapping("/pending")
 	public ResponseEntity<List<GetAllEbookDto>> getAllPendingBooks() {
 
 		return bookService.getAllPendingBooks();

@@ -117,9 +117,13 @@ public class BookServiceImpl implements BookService {
 	private GetAllEbookDto convertToDtoWithContentforGetAllBook(Ebook ebook) {
 		try {
 			byte[] coverImageContent = FileUtils.readFileToByteArray(new File(ebook.getImagePath()));
-
-			return new GetAllEbookDto(ebook.getId(),ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(),
-					coverImageContent);
+			if(ebook.getStatus()!=Status.PENDING)
+			return new GetAllEbookDto(ebook.getUser().getFirstName(),ebook.getUser().getLastName(),ebook.getId(),ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(),ebook.getStatus()
+					,ebook.getApprovedBy().getId(),ebook.getApprovedOn(),coverImageContent);
+			else
+				return new GetAllEbookDto(ebook.getUser().getFirstName(),ebook.getUser().getLastName(),ebook.getId(),ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(),ebook.getStatus()
+						,coverImageContent);
+		
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new ResourceNotFoundException("Content not found for ebook with ID: " + ebook.getId());
@@ -160,7 +164,7 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public ResponseEntity<List<GetAllEbookDto>> getAllNonApprovedBooks() {
+	public ResponseEntity<List<GetAllEbookDto>> getAllRejectedBooks() {
 
 		return getAllBooksInternal(bookRepo.findByStatus(Status.REJECTED));
 	}
@@ -173,7 +177,7 @@ System.out.println(bookRepo.findByStatus(Status.APPROVED));
 	
 	@Override
 	public ResponseEntity<List<GetAllEbookDto>> getAllPendingBooks() {
-
+		System.out.println(bookRepo.findByStatus(Status.PENDING));
 		return getAllBooksInternal(bookRepo.findByStatus(Status.PENDING));
 	}
 
