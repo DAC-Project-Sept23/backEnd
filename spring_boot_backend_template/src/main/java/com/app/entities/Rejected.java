@@ -1,6 +1,7 @@
 package com.app.entities;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
@@ -19,7 +20,7 @@ import lombok.Setter;
 @Getter
 @Setter  
 @NoArgsConstructor
-@AllArgsConstructor
+
 @AttributeOverride(name = "id", column = @Column(name = "rejection_id"))
 public class Rejected extends BaseEntity {
 	@Column(name = "file_path")
@@ -32,5 +33,21 @@ public class Rejected extends BaseEntity {
 	private User author;
 	private String comment;
 	private Timestamp timestamp;
+	public Rejected(String bookPath, User admin, User author, String comment) {
+		super();
+		this.bookPath = bookPath;
+		this.admin = admin;
+		this.author = author;
+		this.comment = comment;
+		// Get the current time in seconds precision
+        long currentSeconds = Instant.now().getEpochSecond();
+
+        // Create a Timestamp without milliseconds
+        this.timestamp = new Timestamp(currentSeconds * 1000);
+		
+	}
+	
+	
+	
 
 }

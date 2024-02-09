@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dto.GetAllEbookDto;
-import com.app.dto.admDto;
+import com.app.dto.ProcessDto;
 
 import com.app.services.AdminService;
 
@@ -28,11 +29,11 @@ public class AdminController {
 	@Autowired
 	private AdminService adminctrl;
 	
-	@PostMapping("/process/{UserId}")
-	public String ApproveBook(@PathVariable Long UserId,@RequestBody admDto adm) {
+	@PostMapping("/process")
+	public ResponseEntity<String> approveBook(@RequestBody ProcessDto admDto) {
 		
-		String str=adminctrl.approveBook(UserId,adm.getBookId(),adm.getSts());
-		return str;
+		
+		return adminctrl.approveBook(admDto);
 	}
 	
 
