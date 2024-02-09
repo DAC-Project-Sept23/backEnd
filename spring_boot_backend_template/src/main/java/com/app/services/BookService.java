@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import com.app.dto.EbookDto;
 import com.app.dto.GetAllEbookDto;
 import com.app.dto.GetEbookDto;
+import com.app.dto.RejectedBookDto;
 import com.app.entities.Genre;
 
 public interface BookService {
@@ -27,4 +28,6 @@ public interface BookService {
      ResponseEntity<List<GetAllEbookDto>> getAllRejectedBooks();
 
 	ResponseEntity<List<GetAllEbookDto>> getAllApprovedBooks();
+
+	
 }

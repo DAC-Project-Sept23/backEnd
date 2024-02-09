@@ -29,6 +29,7 @@ public class GetAllEbookDto {
 	private String title;
 	private Genre genre;
 	private String description;
+	//private String filePath;
 	private double price;
 	private Status status;
 	private Long approvedBy;

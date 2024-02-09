@@ -1,4 +1,5 @@
 package com.app.services;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -16,62 +17,62 @@ import com.app.controllers.BookController;
 import com.app.custom_exceptions.ResourceNotFoundException;
 import com.app.dto.GetAllEbookDto;
 import com.app.dto.GetEbookDto;
+import com.app.dto.ProcessDto;
 import com.app.entities.Ebook;
+import com.app.entities.Rejected;
 import com.app.entities.Status;
 import com.app.entities.User;
 import com.app.repositories.BookRepository;
+import com.app.repositories.RejectedBookRepository;
 import com.app.repositories.UserRepository;
-
-
 
 @Service
 @Transactional
-public class AdminServiceImpl implements AdminService{
+public class AdminServiceImpl implements AdminService {
 
-	
-@Autowired
+	@Autowired
 	private BookRepository book;
-	
-@Autowired
-private UserRepository user;
+
+	@Autowired
+	private UserRepository user;
+	@Autowired
+	private RejectedBookRepository rejectedBookRepo;
 
 	@Override
-	public String approveBook(Long UserId,Long id,Status sts) {
-		Ebook book1=book.findById(id).orElse(null);
-		User u=user.getReferenceById(UserId);
-		
-		if(book1==null)
-		{
-		return "Book Not Exist";	
+	public ResponseEntity<String> approveBook(ProcessDto dto) {
+		System.out.println("in approve book "+dto);
+		Ebook book1 = book.findById(dto.getBookId())
+				.orElseThrow(() -> new ResourceNotFoundException("Book with id " + dto.getBookId() + " not found"));
+		User admin = user.getReferenceById(dto.getAdminId());
+
+		book1.setApprovedBy(admin);
+		book1.setApprovedOn(new Timestamp(Instant.now().getEpochSecond() * 1000));
+		book1.setStatus(dto.getSts());
+
+		if (dto.getSts() == Status.APPROVED) {
+			return ResponseEntity.ok("Book is Approved");
+
 		}
-		book1.setApprovedBy(u);
-		book1.setApprovedOn(new Timestamp(Instant.now().getEpochSecond()* 1000));
-		book1.setStatus(sts);
-		
-		if(sts==Status.APPROVED)
-		return "Book is Approved";
-		else
-			return "Book is Rejected";
+		Rejected rejectedBook = new Rejected(book1.getFilePath(),admin,book1.getUser(),dto.getComment());
+		rejectedBookRepo.save(rejectedBook);
+		return ResponseEntity.ok("Book is rejected");
 	}
 
 	@Override
 	public ResponseEntity<List<GetAllEbookDto>> getRejectedBookByAdminId(Long userId) {
-		User u=user.getReferenceById(userId);
-		System.out.println(book.findByApprovedByAndStatus(u,Status.REJECTED));
-		return  getAllBooksInternal(book.findByApprovedByAndStatus(u,Status.REJECTED));
-		
-				}
+		User u = user.getReferenceById(userId);
+		System.out.println(book.findByApprovedByAndStatus(u, Status.REJECTED));
+		return getAllBooksInternal(book.findByApprovedByAndStatus(u, Status.REJECTED));
+
+	}
+
 	@Override
 	public ResponseEntity<List<GetAllEbookDto>> getApprovedBookByAdminId(Long userId) {
-		User u=user.getReferenceById(userId);
-		System.out.println(book.findByApprovedByAndStatus(u,Status.APPROVED));
-		return  getAllBooksInternal(book.findByApprovedByAndStatus(u,Status.APPROVED));
-		
-				}
-	
-	
-	
-	
+		User u = user.getReferenceById(userId);
+		System.out.println(book.findByApprovedByAndStatus(u, Status.APPROVED));
+		return getAllBooksInternal(book.findByApprovedByAndStatus(u, Status.APPROVED));
+
+	}
 
 	private ResponseEntity<List<GetAllEbookDto>> getAllBooksInternal(List<Ebook> books) {
 		if (books != null) {
@@ -86,13 +87,15 @@ private UserRepository user;
 	private GetAllEbookDto convertToDtoWithContentforGetAllBook(Ebook ebook) {
 		try {
 			byte[] coverImageContent = FileUtils.readFileToByteArray(new File(ebook.getImagePath()));
-			if(ebook.getStatus()!=Status.PENDING)
-			return new GetAllEbookDto(ebook.getUser().getFirstName(),ebook.getUser().getLastName(),ebook.getId(),ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(),ebook.getStatus()
-					,ebook.getApprovedBy().getId(),ebook.getApprovedOn(),coverImageContent);
+			if (ebook.getStatus() != Status.PENDING)
+				return new GetAllEbookDto(ebook.getUser().getFirstName(), ebook.getUser().getLastName(), ebook.getId(),
+						ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(), ebook.getStatus(),
+						ebook.getApprovedBy().getId(), ebook.getApprovedOn(), coverImageContent);
 			else
-				return new GetAllEbookDto(ebook.getUser().getFirstName(),ebook.getUser().getLastName(),ebook.getId(),ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(),ebook.getStatus()
-						,coverImageContent);
-		
+				return new GetAllEbookDto(ebook.getUser().getFirstName(), ebook.getUser().getLastName(), ebook.getId(),
+						ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(), ebook.getStatus(),
+						coverImageContent);
+
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new ResourceNotFoundException("Content not found for ebook with ID: " + ebook.getId());
@@ -111,6 +114,5 @@ private UserRepository user;
 			throw new ResourceNotFoundException("Content not found for ebook with ID: " + ebook.getId());
 		}
 	}
-	
 
 }
