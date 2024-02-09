@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -18,5 +17,5 @@ import lombok.ToString;
 @ToString
 public class admDto {
 	Long bookId;
-Status sts;
+	Status sts;
 }
