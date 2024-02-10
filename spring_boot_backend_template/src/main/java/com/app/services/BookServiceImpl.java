@@ -21,12 +21,16 @@ import com.app.custom_exceptions.ResourceNotFoundException;
 import com.app.dto.EbookDto;
 import com.app.dto.GetAllEbookDto;
 import com.app.dto.GetEbookDto;
+import com.app.dto.RatingDto;
 import com.app.dto.RejectedBookDto;
 import com.app.entities.Ebook;
 import com.app.entities.Genre;
+import com.app.entities.Rating;
+import com.app.entities.RatingId;
 import com.app.entities.Status;
 import com.app.entities.User;
 import com.app.repositories.BookRepository;
+import com.app.repositories.RatingRepository;
 import com.app.repositories.UserRepository;
 
 @Service
@@ -38,6 +42,8 @@ public class BookServiceImpl implements BookService {
 	private BookRepository bookRepo;
 	@Autowired
 	private UserRepository userRepo;
+	@Autowired
+	private RatingRepository ratingRepo;
 
 	@Autowired
 	private ModelMapper mapper;
@@ -189,6 +195,40 @@ public class BookServiceImpl implements BookService {
 		System.out.println(bookRepo.findByStatus(Status.PENDING));
 		return getAllBooksInternal(bookRepo.findByStatus(Status.PENDING));
 	}
+
+	@Override
+	public ResponseEntity<String> doRating(RatingDto rating) {
+		User u = userRepo.findById(rating.getId().getUserId())
+				.orElseThrow(() -> new ResourceNotFoundException("User with id" + rating.getId().getUserId() + " not found"));
+		Ebook b = bookRepo.findById(rating.getId().getEbookId())
+				.orElseThrow(() -> new ResourceNotFoundException("book with id" + rating.getId().getEbookId() + " not found"));
+		System.out.println("Inside daRating mehtod");
+		Rating r = new Rating(new RatingId(u.getId(), b.getId()), u, b, rating.getComment(), rating.getRating());
+		Rating savedRating = ratingRepo.save(r);
+		if (savedRating != null) {
+			return ResponseEntity.ok("Rating added successfully");
+		}
+		return ResponseEntity.status(500).body("Failed to add rating");
+	}
+
+	@Override
+	public ResponseEntity<List<RatingDto>> getAllRating(Long bookId) {
+		List<Rating> list= ratingRepo.findByEbookId(bookId);
+		return ResponseEntity.ok(convertToDtoList(list));
+	}
+	
+	public List<RatingDto> convertToDtoList(List<Rating> ratings) {
+        return ratings.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+	private RatingDto convertToDto(Rating rating) {
+        RatingDto dto= mapper.map(rating, RatingDto.class);
+       User u= userRepo.findById(rating.getUser().getId()).orElseThrow();
+       dto.setFirstName(u.getFirstName());
+       dto.setLastName(u.getLastName());
+       return dto;
+    }
 
 //	@Override
 //	public ResponseEntity<String> rejectBook(RejectedBookDto rDto) {

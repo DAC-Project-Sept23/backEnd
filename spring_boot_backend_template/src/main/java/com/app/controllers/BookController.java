@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.dto.EbookDto;
 import com.app.dto.GetAllEbookDto;
 import com.app.dto.GetEbookDto;
+import com.app.dto.RatingDto;
 import com.app.dto.RejectedBookDto;
 import com.app.entities.Genre;
+import com.app.entities.Rating;
 import com.app.services.BookService;
 
 @RestController
@@ -90,6 +92,31 @@ public class BookController {
 
 	}
 	
+<<<<<<< HEAD
+=======
+	@PostMapping("/rating")
+	public ResponseEntity<String> doRating(@RequestBody RatingDto rating) {
+
+		return bookService.doRating(rating);
+
+	}
+	
+	@PostMapping("/update/rating")
+	public ResponseEntity<String> updateRating(@RequestBody RatingDto rating) {
+
+		return doRating(rating);
+
+	}
+	
+	
+	@GetMapping("/rating/{bookid}")
+	public ResponseEntity<List<RatingDto>> getAllRating(@PathVariable Long bookid) {
+
+		return bookService.getAllRating(bookid);
+
+	}
+	
+>>>>>>> gajendra
 	
 	
 	
