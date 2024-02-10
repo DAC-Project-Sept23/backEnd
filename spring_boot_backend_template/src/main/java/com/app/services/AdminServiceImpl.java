@@ -47,9 +47,9 @@ public class AdminServiceImpl implements AdminService {
 
 		book1.setApprovedBy(admin);
 		book1.setApprovedOn(new Timestamp(Instant.now().getEpochSecond() * 1000));
-		book1.setStatus(dto.getSts());
+		book1.setStatus(dto.getStatus());
 
-		if (dto.getSts() == Status.APPROVED) {
+		if (dto.getStatus() == Status.APPROVED) {
 			return ResponseEntity.ok("Book is Approved");
 
 		}
@@ -83,7 +83,6 @@ public class AdminServiceImpl implements AdminService {
 			return ResponseEntity.notFound().build();
 		}
 	}
-
 	private GetAllEbookDto convertToDtoWithContentforGetAllBook(Ebook ebook) {
 		try {
 			byte[] coverImageContent = FileUtils.readFileToByteArray(new File(ebook.getImagePath()));
@@ -96,19 +95,19 @@ public class AdminServiceImpl implements AdminService {
 						ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(), ebook.getStatus(),
 						coverImageContent);
 
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			throw new ResourceNotFoundException("Content not found for ebook with ID: " + ebook.getId());
-		}
+		throw new ResourceNotFoundException("Content not found for ebook with ID: " + ebook.getId());
+	}
 	}
 
 	private GetEbookDto convertToDtoWithContent(Ebook ebook) {
 		try {
-			byte[] epubFileContent = FileUtils.readFileToByteArray(new File(ebook.getFilePath()));
+			//byte[] epubFileContent = FileUtils.readFileToByteArray(new File(ebook.getFilePath()));
 			byte[] coverImageContent = FileUtils.readFileToByteArray(new File(ebook.getImagePath()));
 
 			return new GetEbookDto(ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(),
-					epubFileContent, coverImageContent);
+					ebook.getFilePath(), coverImageContent);
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new ResourceNotFoundException("Content not found for ebook with ID: " + ebook.getId());

@@ -92,8 +92,7 @@ public class BookController {
 
 	}
 	
-<<<<<<< HEAD
-=======
+
 	@PostMapping("/rating")
 	public ResponseEntity<String> doRating(@RequestBody RatingDto rating) {
 
@@ -116,7 +115,7 @@ public class BookController {
 
 	}
 	
->>>>>>> gajendra
+
 	
 	
 	
