@@ -2289,3 +2289,35 @@
 2024-02-09 12:33:21,793 [Worker-40: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
 2024-02-09 12:33:21,793 [Worker-40: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
 2024-02-09 12:33:21,793 [Worker-40: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory E:\CDAC\PushGit\backEnd\spring_boot_backend_template\src\test\resources
+2024-02-09 12:39:52,064 [Worker-45: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2024-02-09 12:39:52,064 [Worker-45: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2024-02-09 12:39:52,065 [Worker-45: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2024-02-09 12:39:52,076 [Worker-45: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2024-02-09 12:39:52,078 [Worker-45: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2024-02-09 12:39:52,078 [Worker-45: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2024-02-09 12:39:52,079 [Worker-45: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory E:\CDAC\PushGit\backEnd\spring_boot_backend_template\src\test\resources
+2024-02-09 12:51:07,863 [Worker-63: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2024-02-09 12:51:07,863 [Worker-63: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2024-02-09 12:51:07,864 [Worker-63: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2024-02-09 12:51:07,883 [Worker-63: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2024-02-09 12:51:07,885 [Worker-63: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2024-02-09 12:51:07,885 [Worker-63: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2024-02-09 12:51:07,886 [Worker-63: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory E:\CDAC\PushGit\backEnd\spring_boot_backend_template\src\test\resources
+2024-02-09 12:54:47,848 [Worker-57: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2024-02-09 12:54:47,848 [Worker-57: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2024-02-09 12:54:47,849 [Worker-57: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2024-02-09 12:54:47,859 [Worker-57: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2024-02-09 12:54:47,862 [Worker-57: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2024-02-09 12:54:47,862 [Worker-57: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2024-02-09 12:54:47,862 [Worker-57: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory E:\CDAC\PushGit\backEnd\spring_boot_backend_template\src\test\resources
+2024-02-10 09:01:45,697 [Worker-77: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2024-02-10 09:01:45,697 [Worker-77: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2024-02-10 09:01:45,698 [Worker-77: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2024-02-10 09:01:45,822 [Worker-77: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2024-02-10 09:01:45,846 [Worker-77: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2024-02-10 09:01:45,846 [Worker-77: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2024-02-10 09:01:45,846 [Worker-77: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory E:\CDAC\PushGit\backEnd\spring_boot_backend_template\src\test\resources
+2024-02-10 09:01:52,991 [Framework stop - Equinox Container: efbd30ab-4493-4d9b-8b9d-a0dafa7c5d16] INFO  org.eclipse.jetty.server.Server - Stopped Server@3a4459c5{STOPPING}[10.0.6,sto=0]
+2024-02-10 09:01:53,006 [Framework stop - Equinox Container: efbd30ab-4493-4d9b-8b9d-a0dafa7c5d16] INFO  o.e.jetty.server.AbstractConnector - Stopped ServerConnector@34d543e3{HTTP/1.1, (http/1.1)}{0.0.0.0:0}
+2024-02-10 09:01:53,178 [Framework stop - Equinox Container: efbd30ab-4493-4d9b-8b9d-a0dafa7c5d16] INFO  o.e.j.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@1a75f7c4{/wse,null,STOPPED}
+2024-02-10 12:36:09,148 [Worker-2: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
