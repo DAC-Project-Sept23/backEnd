@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.app.custom_exceptions.ResourceNotFoundException;
+import com.app.dto.ChangePassDto;
 import com.app.dto.UserDto;
 import com.app.dto.UserResult;
 import com.app.entities.User;
@@ -41,6 +42,18 @@ private ModelMapper mapper;
 		User u = userRepo.findById(userId).orElseThrow(()->new ResourceNotFoundException("User with user id "+userId+" not exist"));
 		
 		return ResponseEntity.ok(mapper.map(u,UserDto.class));
+	}
+
+	@Override
+	public String setNewPass(ChangePassDto passChange) {
+		User user=userRepo.findById(passChange.getUserId()).orElseThrow(()->new ResourceNotFoundException("User Not Found"));
+		if(user.getPassword().equals(passChange.getOldPass()))
+		{
+			user.setPassword(passChange.getNewPass());
+			return "Password Changed!!";
+		}
+		else
+		return "Old Password is incorrect!!!";
 	}
 
 }

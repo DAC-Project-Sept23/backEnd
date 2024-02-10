@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.dto.ChangePassDto;
 import com.app.dto.UserDto;
 import com.app.dto.UserResult;
 import com.app.entities.User;
@@ -29,16 +30,17 @@ public class UserController{
    @PostMapping("/signup")
 	public ResponseEntity<UserResult> userSignup(@RequestBody UserDto user) {
 		return userService.userSignup(user);
-//		if (u != null) {
-//			UserResult result = new UserResult(u, true, "SignUp Successful");
-//			return new ResponseEntity<UserResult>(result, HttpStatus.CREATED);
-//		}
-//		String errorMessage = "Failed to sign up. Please try again.";
-//		UserResult userResult = new UserResult(null, false, errorMessage);
-//		return new ResponseEntity<>(userResult, HttpStatus.UNAUTHORIZED);
+
 	}
    @GetMapping("/getUser/{userId}")
    public ResponseEntity<UserDto> getUserByUserId(@PathVariable Long userId){
       return userService.getUserByUserId(userId);
+   }
+   
+   @PostMapping("/UpdatePassword")
+   public ResponseEntity<String> passwordUpdate(@RequestBody ChangePassDto passupdate){
+    
+     
+     return ResponseEntity.ok(userService.setNewPass(passupdate));
    }
 }
