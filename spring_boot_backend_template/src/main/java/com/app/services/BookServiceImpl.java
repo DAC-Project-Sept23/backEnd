@@ -214,9 +214,6 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public ResponseEntity<List<RatingDto>> getAllRating(Long bookId) {
 		List<Rating> list= ratingRepo.findByEbookId(bookId);
-		for(Rating r :list) {
-			System.out.println(r);
-		}
 		return ResponseEntity.ok(convertToDtoList(list));
 	}
 	
@@ -226,7 +223,11 @@ public class BookServiceImpl implements BookService {
                 .collect(Collectors.toList());
     }
 	private RatingDto convertToDto(Rating rating) {
-        return mapper.map(rating, RatingDto.class);
+        RatingDto dto= mapper.map(rating, RatingDto.class);
+       User u= userRepo.findById(rating.getUser().getId()).orElseThrow();
+       dto.setFirstName(u.getFirstName());
+       dto.setLastName(u.getLastName());
+       return dto;
     }
 
 //	@Override
