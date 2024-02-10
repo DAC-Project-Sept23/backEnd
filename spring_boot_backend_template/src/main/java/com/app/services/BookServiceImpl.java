@@ -33,7 +33,7 @@ import com.app.repositories.UserRepository;
 @Transactional
 public class BookServiceImpl implements BookService {
 
-	private final String uploadDir = "uploaded_files";
+	private final String uploadDir = "src/main/resources/static";
 	@Autowired
 	private BookRepository bookRepo;
 	@Autowired
