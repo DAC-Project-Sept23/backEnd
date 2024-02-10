@@ -33,7 +33,7 @@ import com.app.repositories.UserRepository;
 @Transactional
 public class BookServiceImpl implements BookService {
 
-	private final String uploadDir = "src/main/resources/static";
+	private final String uploadDir = "";
 	@Autowired
 	private BookRepository bookRepo;
 	@Autowired
@@ -123,35 +123,49 @@ public class BookServiceImpl implements BookService {
 
 	private GetAllEbookDto convertToDtoWithContentforGetAllBook(Ebook ebook) {
 		try {
-			byte[] coverImageContent = FileUtils.readFileToByteArray(new File(ebook.getImagePath()));
+		byte[] coverImageContent = FileUtils.readFileToByteArray(new File(ebook.getImagePath()));
 			if (ebook.getStatus() != Status.PENDING)
 				return new GetAllEbookDto(ebook.getUser().getFirstName(), ebook.getUser().getLastName(), ebook.getId(),
 						ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(), ebook.getStatus(),
-						ebook.getApprovedBy().getId(), ebook.getApprovedOn(), coverImageContent);
+						ebook.getApprovedBy().getId(), ebook.getApprovedOn(),coverImageContent);
 			else
 				return new GetAllEbookDto(ebook.getUser().getFirstName(), ebook.getUser().getLastName(), ebook.getId(),
 						ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(), ebook.getStatus(),
 						coverImageContent);
 
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ResourceNotFoundException("Content not found for ebook with ID: " + ebook.getId());
 		}
 	}
+//
+//	private GetEbookDto convertToDtoWithContent(Ebook ebook) {
+//		try {
+//			byte[] epubFileContent = FileUtils.readFileToByteArray(new File(ebook.getFilePath()));
+//			byte[] coverImageContent = FileUtils.readFileToByteArray(new File(ebook.getImagePath()));
+//
+//			return new GetEbookDto(ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(),
+//					epubFileContent, coverImageContent);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			throw new ResourceNotFoundException("Content not found for ebook with ID: " + ebook.getId());
+//		}
+//	}
+
 
 	private GetEbookDto convertToDtoWithContent(Ebook ebook) {
 		try {
-			byte[] epubFileContent = FileUtils.readFileToByteArray(new File(ebook.getFilePath()));
+			//byte[] epubFileContent = FileUtils.readFileToByteArray(new File(ebook.getFilePath()));
 			byte[] coverImageContent = FileUtils.readFileToByteArray(new File(ebook.getImagePath()));
 
 			return new GetEbookDto(ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(),
-					epubFileContent, coverImageContent);
+					ebook.getFilePath(), coverImageContent);
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new ResourceNotFoundException("Content not found for ebook with ID: " + ebook.getId());
 		}
 	}
-
+	
 	@Override
 	public ResponseEntity<GetEbookDto> getByBookId(Long id) {
 		Optional<Ebook> ebookOptional = bookRepo.findById(id);

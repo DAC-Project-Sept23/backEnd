@@ -19,5 +19,5 @@ public class ProcessDto {
 	private Long adminId;
 	private Long bookId;
 	private String comment;
-	private Status sts;
+	private Status status;
 }

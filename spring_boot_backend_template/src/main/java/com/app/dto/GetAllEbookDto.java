@@ -40,7 +40,7 @@ public class GetAllEbookDto {
 
 	
 
-   
+  // private String imagePath;
     private byte[] coverImageContent;
 
     public GetAllEbookDto(String firstName,String lastName,Long id,String title,Genre genre, String description, double price, Status sts,Long approvedBy,Timestamp approvedOn,byte[] coverImageContent) {
@@ -67,7 +67,7 @@ public class GetAllEbookDto {
         this.genre = genre;
         this.description = description;
         this.price = price;
-        this.coverImageContent = coverImageContent;
+        this.coverImageContent=coverImageContent;
         this.status=sts;
         
     }	

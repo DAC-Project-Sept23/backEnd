@@ -28,6 +28,7 @@ public class UserController{
 	private UserService userService;
 	
    @PostMapping("/signup")
+   //@PostMapping(value = "/signup", consumes = "form-data")
 	public ResponseEntity<UserResult> userSignup(@RequestBody UserDto user) {
 		return userService.userSignup(user);
 
