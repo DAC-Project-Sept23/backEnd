@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     <fullyQualifiedTypeName name="javax.transaction.Transactional"/>
     <fullyQualifiedTypeName name="javax.servlet.annotation.MultipartConfig"/>
@@ -83,4 +84,7 @@
     <fullyQualifiedTypeName name="com.app.entities.User"/>
     <fullyQualifiedTypeName name="com.app.custom_exceptions.ResourceNotFoundException"/>
 >>>>>>> 8ee6357ca97f997c60620164d04385efaf4510fa
+=======
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.GetMapping"/>
+>>>>>>> gajendra
 </qualifiedTypeNameHistroy>
