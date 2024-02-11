@@ -20,7 +20,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ChangePassDto {
-	
+	@JsonIgnore
 	Long UserId;
 	String oldPass;
 	String newPass;

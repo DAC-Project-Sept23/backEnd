@@ -66,10 +66,10 @@ public class BookController {
 
 	}
 	
-	@GetMapping("/user/{userId}")
-	public ResponseEntity<List<GetAllEbookDto>> getBooksByUserId(@PathVariable Long userId) {
+	@GetMapping("/user/approved/{userId}")
+	public ResponseEntity<List<GetAllEbookDto>> getApprovedBooksByUserId(@PathVariable Long userId) {
 
-		return bookService.getBookByUserId(userId);
+		return bookService.getApprovedBookByUserId(userId);
 
 	}
 	
@@ -93,27 +93,7 @@ public class BookController {
 	}
 	
 
-	@PostMapping("/rating")
-	public ResponseEntity<String> doRating(@RequestBody RatingDto rating) {
-
-		return bookService.doRating(rating);
-
-	}
 	
-	@PostMapping("/update/rating")
-	public ResponseEntity<String> updateRating(@RequestBody RatingDto rating) {
-
-		return doRating(rating);
-
-	}
-	
-	
-	@GetMapping("/rating/{bookid}")
-	public ResponseEntity<List<RatingDto>> getAllRating(@PathVariable Long bookid) {
-
-		return bookService.getAllRating(bookid);
-
-	}
 	
 
 	

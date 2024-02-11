@@ -2,18 +2,11 @@ package com.app.entities;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -65,11 +58,11 @@ public class Ebook extends BaseEntity {
 	@Column(name = "processed_on" )
 	private Timestamp processedOn;
 	
-//	@OneToMany//(fetch = FetchType.EAGER)
-//	@JoinColumn(name="if_rejected" )
-//	private Rejected ifRejected;
-	
-	//(String, Genre, String, double, String, String) is undefined
+
+    @ManyToMany(mappedBy = "wishlist" ,fetch = FetchType.LAZY)
+    private Set<User> wishlistedBy = new HashSet<>();
+
+
 	public Ebook( String title, Genre genre, String description, double price, String filePath,
 			String imagePath) {
 		
@@ -97,6 +90,11 @@ public class Ebook extends BaseEntity {
 		this.imagePath = imagePath;
 		this.status=Status.PENDING;
 	
+	}
+	
+	public void AddUserToWishList(User u)
+	{
+		wishlistedBy.add(u);
 	}
 	
 	//(long, String, Genre, String, double, String, String)

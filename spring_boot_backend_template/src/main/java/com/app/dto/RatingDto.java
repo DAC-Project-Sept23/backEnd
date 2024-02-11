@@ -1,6 +1,6 @@
 package com.app.dto;
 
-import com.app.entities.RatingId;
+import com.app.entities.CompositKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -18,7 +18,7 @@ import lombok.ToString;
 public class RatingDto {
 //	private Long userId;
 //	private Long bookId;
-	 private RatingId id;
+	 private CompositKey id;
 	 @JsonProperty(access = Access.READ_ONLY)
 	 private String firstName;
 	 @JsonProperty(access = Access.READ_ONLY)

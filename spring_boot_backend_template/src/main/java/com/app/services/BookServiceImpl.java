@@ -26,7 +26,7 @@ import com.app.dto.RejectedBookDto;
 import com.app.entities.Ebook;
 import com.app.entities.Genre;
 import com.app.entities.Rating;
-import com.app.entities.RatingId;
+import com.app.entities.CompositKey;
 import com.app.entities.Status;
 import com.app.entities.User;
 import com.app.repositories.BookRepository;
@@ -187,9 +187,9 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public ResponseEntity<List<GetAllEbookDto>> getBookByUserId(Long userId) {
-
-		return getAllBooksInternal(bookRepo.getAllByUserId(userId));
+	public ResponseEntity<List<GetAllEbookDto>> getApprovedBookByUserId(Long userId) {
+		User u=userRepo.getReferenceById(userId);
+		return getAllBooksInternal(bookRepo.findByUserAndStatus(u,Status.APPROVED));
 	}
 
 	@Override
@@ -217,7 +217,7 @@ public class BookServiceImpl implements BookService {
 		Ebook b = bookRepo.findById(rating.getId().getEbookId())
 				.orElseThrow(() -> new ResourceNotFoundException("book with id" + rating.getId().getEbookId() + " not found"));
 		System.out.println("Inside daRating mehtod");
-		Rating r = new Rating(new RatingId(u.getId(), b.getId()), u, b, rating.getComment(), rating.getRating());
+		Rating r = new Rating(new CompositKey(u.getId(), b.getId()), u, b, rating.getComment(), rating.getRating());
 		Rating savedRating = ratingRepo.save(r);
 		if (savedRating != null) {
 			return ResponseEntity.ok("Rating added successfully");

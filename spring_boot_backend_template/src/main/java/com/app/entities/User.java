@@ -1,12 +1,10 @@
 package com.app.entities;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -37,5 +35,28 @@ public class User extends BaseEntity {
 	private String password;
 	private LocalDate dob;
 	
+	   @ManyToMany(fetch = FetchType.LAZY)
+	    @JoinTable(name = "user_wishlist",
+	            joinColumns = @JoinColumn(name = "user_id"),
+	            inverseJoinColumns = @JoinColumn(name = "book_id"))
+	    private Set<Ebook> wishlist = new HashSet<>();
+	   
+	   public User(Long id,String firstName, String lastName, String email,Role role,String password,
+			LocalDate dob)
+	   {
+		   this.id=id;
+		   this.firstName=firstName;
+		   this.lastName=lastName;
+		   this.email=email;
+		   this.role=role;
+		   this.password=password;
+		   this.dob=dob;
+	   }
+	   
+	   public void AddBookToWishList(Ebook book)
+	   {
+		   wishlist.add(book);
+	   }
+
 	
 }
