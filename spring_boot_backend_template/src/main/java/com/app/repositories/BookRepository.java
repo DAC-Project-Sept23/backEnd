@@ -3,6 +3,7 @@ package com.app.repositories;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.app.entities.Ebook;
 import com.app.entities.Genre;
@@ -16,5 +17,8 @@ public interface BookRepository extends JpaRepository<Ebook, Long> {
 
 	List<Ebook> getAllByUserId(Long userId);
 	List<Ebook> findByStatus(Status sts);
-	List<Ebook> findByApprovedByAndStatus(User approvedby,Status sts);
+
+	List<Ebook> findByProcessedByAndStatus(User processedBy,Status status);
+	
+	 
 }

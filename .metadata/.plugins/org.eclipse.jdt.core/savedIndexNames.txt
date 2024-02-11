@@ -1,7 +1,5 @@
 INDEX VERSION 1.131+C:\Users\Chaitanya\Desktop\Project Backend\Project\Project\.metadata\.plugins\org.eclipse.jdt.core
-<<<<<<< HEAD
-=======
-3018838063.index
+1616315394.index
 3651137163.index
 1192823954.index
 632201908.index
@@ -88,51 +86,13 @@ INDEX VERSION 1.131+C:\Users\Chaitanya\Desktop\Project Backend\Project\Project\.
 3508347526.index
 167568616.index
 3371950110.index
->>>>>>> main
 4144899759.index
-2255029575.index
-1594521477.index
-327694622.index
-1865797976.index
-3508347526.index
+3119242486.index
+4182027620.index
 3851628924.index
 1576634713.index
-3695651479.index
-764652179.index
+2920719935.index
 2375313853.index
-<<<<<<< HEAD
-2245642139.index
-3593263727.index
-105375863.index
-1706832641.index
-3156794487.index
-1480439847.index
-2563425202.index
-3018838063.index
-3400080579.index
-3371950110.index
-719820959.index
-1372666916.index
-4182027620.index
-2767707612.index
-1666509640.index
-3267161506.index
-2381008039.index
-1131620145.index
-2080781191.index
-3831590495.index
-3398419229.index
-2554096441.index
-301333499.index
-4181835334.index
-1255225096.index
-3241777049.index
-1368718954.index
-2565356412.index
-1561430300.index
-3119242486.index
-3168136179.index
-=======
 32327926.index
 1176039772.index
 3267161506.index
@@ -141,5 +101,4 @@ INDEX VERSION 1.131+C:\Users\Chaitanya\Desktop\Project Backend\Project\Project\.
 4051593755.index
 243471064.index
 1618711589.index
-1616315394.index
->>>>>>> main
+3018838063.index

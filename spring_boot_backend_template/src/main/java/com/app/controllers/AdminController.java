@@ -30,10 +30,10 @@ public class AdminController {
 	private AdminService adminctrl;
 	
 	@PostMapping("/process")
-	public ResponseEntity<String> approveBook(@RequestBody ProcessDto admDto) {
+	public ResponseEntity<String> processBook(@RequestBody ProcessDto admDto) {
 		
 		
-		return adminctrl.approveBook(admDto);
+		return adminctrl.processBook(admDto);
 	}
 	
 
