@@ -25,6 +25,8 @@ import lombok.Setter;
 public class Rejected extends BaseEntity {
 	@Column(name = "file_path")
 	private String bookPath;
+	@Column(name = "file_title")
+	private String title;
 	@ManyToOne
 	@JoinColumn(name = "admin_id")
 	private User admin;
@@ -33,8 +35,9 @@ public class Rejected extends BaseEntity {
 	private User author;
 	private String comment;
 	private Timestamp timestamp;
-	public Rejected(String bookPath, User admin, User author, String comment) {
+	public Rejected(String title,String bookPath, User admin, User author, String comment) {
 		super();
+		this.title=title;
 		this.bookPath = bookPath;
 		this.admin = admin;
 		this.author = author;

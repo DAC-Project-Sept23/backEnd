@@ -2,13 +2,17 @@ package com.app.entities;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -53,13 +57,17 @@ public class Ebook extends BaseEntity {
 	private Status status;
 	
 	@ManyToOne
-	@JoinColumn(name="approved_by")
-	private User approvedBy;
+	@JoinColumn(name="processed_by")
+	private User processedBy;
 	
 	//Approved Time Stamp
 	
-	@Column(name = "approved_on")
-	private Timestamp approvedOn;
+	@Column(name = "processed_on" )
+	private Timestamp processedOn;
+	
+//	@OneToMany//(fetch = FetchType.EAGER)
+//	@JoinColumn(name="if_rejected" )
+//	private Rejected ifRejected;
 	
 	//(String, Genre, String, double, String, String) is undefined
 	public Ebook( String title, Genre genre, String description, double price, String filePath,

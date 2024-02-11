@@ -32,8 +32,8 @@ public class GetAllEbookDto {
 	//private String filePath;
 	private double price;
 	private Status status;
-	private Long approvedBy;
-	private Timestamp approvedOn;
+	private Long processedBy;
+	private Timestamp processedOn;
 	
 	
 	// Fields for EPUB file and cover image
@@ -43,7 +43,7 @@ public class GetAllEbookDto {
   // private String imagePath;
     private byte[] coverImageContent;
 
-    public GetAllEbookDto(String firstName,String lastName,Long id,String title,Genre genre, String description, double price, Status sts,Long approvedBy,Timestamp approvedOn,byte[] coverImageContent) {
+    public GetAllEbookDto(String firstName,String lastName,Long id,String title,Genre genre, String description, double price, Status sts,Long processedBy,Timestamp processedOn,byte[] coverImageContent) {
       
     	this.id=id;
     	this.firstName=firstName;
@@ -54,8 +54,8 @@ public class GetAllEbookDto {
         this.price = price;
         this.coverImageContent = coverImageContent;
         this.status=sts;
-        this.approvedBy=approvedBy;
-        this.approvedOn=approvedOn;
+        this.processedBy=processedBy;
+        this.processedOn=processedOn;
     }	
     
     public GetAllEbookDto(String firstName,String lastName,Long id,String title,Genre genre, String description, double price, Status sts,byte[] coverImageContent) {

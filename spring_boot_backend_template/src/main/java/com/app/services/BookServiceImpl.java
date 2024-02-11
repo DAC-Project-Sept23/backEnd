@@ -133,7 +133,7 @@ public class BookServiceImpl implements BookService {
 			if (ebook.getStatus() != Status.PENDING)
 				return new GetAllEbookDto(ebook.getUser().getFirstName(), ebook.getUser().getLastName(), ebook.getId(),
 						ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(), ebook.getStatus(),
-						ebook.getApprovedBy().getId(), ebook.getApprovedOn(),coverImageContent);
+						ebook.getProcessedBy().getId(), ebook.getProcessedOn(),coverImageContent);
 			else
 				return new GetAllEbookDto(ebook.getUser().getFirstName(), ebook.getUser().getLastName(), ebook.getId(),
 						ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(), ebook.getStatus(),

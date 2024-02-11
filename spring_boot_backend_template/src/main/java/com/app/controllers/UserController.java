@@ -38,7 +38,7 @@ public class UserController{
       return userService.getUserByUserId(userId);
    }
    
-   @PostMapping("/UpdatePassword")
+   @PostMapping("/update/password")
    public ResponseEntity<String> passwordUpdate(@RequestBody ChangePassDto passupdate){
     
      
