@@ -18,8 +18,7 @@ import com.app.dto.UserResult;
 import com.app.dto.UserUpdateDto;
 import com.app.entities.Ebook;
 import com.app.entities.User;
-import com.app.entities.Wishlist;
-import com.app.entities.WishlistId;
+
 import com.app.repositories.BookRepository;
 import com.app.repositories.UserRepository;
 import com.app.repositories.WishlistRepository;

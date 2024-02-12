@@ -5,7 +5,6 @@
     <fullyQualifiedTypeName name="org.apache.catalina.mapper.Mapper"/>
     <fullyQualifiedTypeName name="org.modelmapper.ModelMapper"/>
     <fullyQualifiedTypeName name="com.app.dto.UserUpdateDto"/>
-    <fullyQualifiedTypeName name="com.fasterxml.jackson.annotation.JsonIgnore"/>
     <fullyQualifiedTypeName name="org.springframework.http.ResponseEntity"/>
     <fullyQualifiedTypeName name="javax.persistence.Embeddable"/>
     <fullyQualifiedTypeName name="java.io.Serializable"/>
@@ -35,4 +34,5 @@
     <fullyQualifiedTypeName name="com.app.services.BookService"/>
     <fullyQualifiedTypeName name="com.app.repositories.BookRepository"/>
     <fullyQualifiedTypeName name="com.app.services.WishlistService"/>
+    <fullyQualifiedTypeName name="com.fasterxml.jackson.annotation.JsonIgnore"/>
 </qualifiedTypeNameHistroy>

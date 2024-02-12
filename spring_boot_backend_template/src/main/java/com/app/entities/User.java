@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -34,7 +35,7 @@ public class User extends BaseEntity {
 	private Role role;
 	private String password;
 	private LocalDate dob;
-	
+		@JsonIgnore
 	   @ManyToMany(fetch = FetchType.LAZY)
 	    @JoinTable(name = "user_wishlist",
 	            joinColumns = @JoinColumn(name = "user_id"),
