@@ -1,7 +1,12 @@
 package com.app.controllers;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,11 +37,31 @@ public class WishlistController {
 	@Autowired
 	private BookService book;
 	
-	@PostMapping("/wish/{userId}")
-	public String addBookToWishlist(@PathVariable Long  userId,@RequestBody Long bookId)
+	@PostMapping
+	ResponseEntity<?> wishlistBook(@RequestBody Map<String, Long> requestBody)
+	  {
+			Long bookId = requestBody.get("bookId");
+		    Long userId = requestBody.get("userId");
+	       if (userId == null || bookId == null || userId <= 0 || bookId <= 0) {
+	           return ResponseEntity.badRequest().body("Invalid userId or bookId");
+	       }
+	       return wish.wishlistBook(bookId, userId);
+	   }
+	
+	@GetMapping("/{userId}")
+	ResponseEntity<?> getWishList(@PathVariable Long userId)
 	{
-		wish.AddBookToWish(userId, bookId);
-		
-		return wish.AddBookToWish(userId, bookId);
+		return wish.getWishlistByUserId(userId);
+	}
+	
+	@DeleteMapping
+	ResponseEntity<?> deleteFromWishList(@RequestBody Map<String, Long> requestBody)
+	{
+		Long bookId = requestBody.get("bookId");
+	    Long userId = requestBody.get("userId");
+       if (userId == null || bookId == null || userId <= 0 || bookId <= 0) {
+           return ResponseEntity.badRequest().body("Invalid userId or bookId");
+       }
+       return wish.deleteBookFromWishlist(bookId, userId);
 	}
 }

@@ -57,6 +57,10 @@ public class User extends BaseEntity {
 	   {
 		   wishlist.add(book);
 	   }
+	   public void removeBookFromWishList(Ebook book)
+	   {
+		   wishlist.remove(book);
+	   }
 
 	
 }

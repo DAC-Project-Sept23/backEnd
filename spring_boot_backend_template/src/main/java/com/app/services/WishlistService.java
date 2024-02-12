@@ -1,5 +1,9 @@
 package com.app.services;
 
+import org.springframework.http.ResponseEntity;
+
 public interface WishlistService {
-	public String AddBookToWish(Long userId,Long bookId);
+	ResponseEntity<?> wishlistBook(Long bookId, Long userId);
+	ResponseEntity<?> getWishlistByUserId(Long userId);
+	ResponseEntity<?> deleteBookFromWishlist(Long bookId, Long userId);
 }

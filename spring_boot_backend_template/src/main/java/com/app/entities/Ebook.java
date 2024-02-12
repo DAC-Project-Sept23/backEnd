@@ -59,8 +59,8 @@ public class Ebook extends BaseEntity {
 	private Timestamp processedOn;
 	
 
-    @ManyToMany(mappedBy = "wishlist" ,fetch = FetchType.LAZY)
-    private Set<User> wishlistedBy = new HashSet<>();
+//    @ManyToMany(mappedBy = "wishlist" ,fetch = FetchType.LAZY)
+//    private Set<User> wishlistedBy = new HashSet<>();
 
 
 	public Ebook( String title, Genre genre, String description, double price, String filePath,
@@ -74,6 +74,7 @@ public class Ebook extends BaseEntity {
 		this.imagePath = imagePath;
 		// Get the current time in seconds precision
         long currentSeconds = Instant.now().getEpochSecond();
+        
 
         // Create a Timestamp without milliseconds
         this.addedOn = new Timestamp(currentSeconds * 1000);
@@ -92,10 +93,7 @@ public class Ebook extends BaseEntity {
 	
 	}
 	
-	public void AddUserToWishList(User u)
-	{
-		wishlistedBy.add(u);
-	}
+	
 	
 	//(long, String, Genre, String, double, String, String)
 	
