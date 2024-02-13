@@ -19,10 +19,16 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ChangePassDto {
+public class UserUpdateDto {
+	//@JsonProperty(access = Access.READ_ONLY)
 	@JsonIgnore
-	Long UserId;
-	String oldPass;
-	String newPass;
+	private Long Id;
+	
+	private String firstName;
+	private String lastName;
+	
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private LocalDate dob;
+
 
 }

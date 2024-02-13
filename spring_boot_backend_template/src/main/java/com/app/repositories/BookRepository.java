@@ -17,7 +17,7 @@ public interface BookRepository extends JpaRepository<Ebook, Long> {
 
 	List<Ebook> getAllByUserId(Long userId);
 	List<Ebook> findByStatus(Status sts);
-
+	List<Ebook>findByUserAndStatus(User u,Status status);
 	List<Ebook> findByProcessedByAndStatus(User processedBy,Status status);
 	
 	 

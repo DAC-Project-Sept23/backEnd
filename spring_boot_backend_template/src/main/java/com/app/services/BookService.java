@@ -25,15 +25,13 @@ public interface BookService {
 
 	ResponseEntity<GetEbookDto> getByBookId(Long id);
 
-	ResponseEntity<List<GetAllEbookDto>> getBookByUserId(Long userid);
+	ResponseEntity<List<GetAllEbookDto>> getApprovedBookByUserId(Long userid);
 
      ResponseEntity<List<GetAllEbookDto>> getAllRejectedBooks();
 
 	ResponseEntity<List<GetAllEbookDto>> getAllApprovedBooks();
 
-	ResponseEntity<String> doRating(RatingDto rating);
 
-	ResponseEntity<List<RatingDto>> getAllRating(Long bookId);
 
 	
 }

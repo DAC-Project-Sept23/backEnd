@@ -17,7 +17,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RatingId implements Serializable {
+public class CompositKey implements Serializable {
 
 	@Column(name = "user_id")
 	private Long userId;
