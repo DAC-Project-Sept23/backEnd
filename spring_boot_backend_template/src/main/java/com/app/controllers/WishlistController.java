@@ -13,12 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.entities.Ebook;
-import com.app.entities.User;
-import com.app.repositories.BookRepository;
-import com.app.repositories.UserRepository;
-import com.app.services.BookService;
-import com.app.services.UserService;
+
 import com.app.services.WishlistService;
 
 
@@ -33,10 +28,7 @@ public class WishlistController {
 	private WishlistService wish;
 	
 	
-	
-	@Autowired
-	private BookService book;
-	
+
 	@PostMapping
 	ResponseEntity<?> wishlistBook(@RequestBody Map<String, Long> requestBody)
 	  {

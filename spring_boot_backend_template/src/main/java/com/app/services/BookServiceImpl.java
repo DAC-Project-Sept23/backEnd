@@ -210,26 +210,7 @@ public class BookServiceImpl implements BookService {
 		return getAllBooksInternal(bookRepo.findByStatus(Status.PENDING));
 	}
 
-	@Override
-	public ResponseEntity<String> doRating(RatingDto rating) {
-		User u = userRepo.findById(rating.getId().getUserId())
-				.orElseThrow(() -> new ResourceNotFoundException("User with id" + rating.getId().getUserId() + " not found"));
-		Ebook b = bookRepo.findById(rating.getId().getEbookId())
-				.orElseThrow(() -> new ResourceNotFoundException("book with id" + rating.getId().getEbookId() + " not found"));
-		System.out.println("Inside daRating mehtod");
-		Rating r = new Rating(new CompositKey(u.getId(), b.getId()), u, b, rating.getComment(), rating.getRating());
-		Rating savedRating = ratingRepo.save(r);
-		if (savedRating != null) {
-			return ResponseEntity.ok("Rating added successfully");
-		}
-		return ResponseEntity.status(500).body("Failed to add rating");
-	}
 
-	@Override
-	public ResponseEntity<List<RatingDto>> getAllRating(Long bookId) {
-		List<Rating> list= ratingRepo.findByEbookId(bookId);
-		return ResponseEntity.ok(convertToDtoList(list));
-	}
 	
 	public List<RatingDto> convertToDtoList(List<Rating> ratings) {
         return ratings.stream()

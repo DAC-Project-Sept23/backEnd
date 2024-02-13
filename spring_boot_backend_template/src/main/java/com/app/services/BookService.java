@@ -31,9 +31,7 @@ public interface BookService {
 
 	ResponseEntity<List<GetAllEbookDto>> getAllApprovedBooks();
 
-	ResponseEntity<String> doRating(RatingDto rating);
 
-	ResponseEntity<List<RatingDto>> getAllRating(Long bookId);
 
 	
 }

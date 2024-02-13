@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 
 
+
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -57,10 +58,6 @@ public class Ebook extends BaseEntity {
 	private Timestamp processedOn;
 	
 
-//    @ManyToMany(mappedBy = "wishlist" ,fetch = FetchType.LAZY)
-//    private Set<User> wishlistedBy = new HashSet<>();
-
-
 	public Ebook( String title, Genre genre, String description, double price, String filePath,
 			String imagePath) {
 		
@@ -91,10 +88,5 @@ public class Ebook extends BaseEntity {
 	
 	}
 	
-	
-	
-	//(long, String, Genre, String, double, String, String)
-	
 
-	
 }
