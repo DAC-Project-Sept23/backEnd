@@ -22,7 +22,6 @@ import com.app.services.AdminService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
-
 @RequestMapping("/admin")
 public class AdminController {
 

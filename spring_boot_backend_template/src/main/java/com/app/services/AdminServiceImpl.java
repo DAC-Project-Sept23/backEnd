@@ -61,6 +61,7 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public ResponseEntity<List<GetAllEbookDto>> getRejectedBookByAdminId(Long userId) {
 		User u = user.getReferenceById(userId);
+	
 		System.out.println(book.findByApprovedByAndStatus(u, Status.REJECTED));
 		return getAllBooksInternal(book.findByApprovedByAndStatus(u, Status.REJECTED));
 

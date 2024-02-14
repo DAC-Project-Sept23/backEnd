@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,6 +29,7 @@ import com.app.services.BookService;
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RequestMapping("/books")
 public class BookController {
+	
 
 	@Autowired
 	private BookService bookService;
@@ -60,6 +62,7 @@ public class BookController {
 	}
 	
 	@GetMapping("/read/{id}")
+	//@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<GetEbookDto> getByBookId(@PathVariable Long id) {
 
 		return bookService.getByBookId(id);
@@ -91,29 +94,29 @@ public class BookController {
 		return bookService.getAllPendingBooks();
 
 	}
-	
-	@PostMapping("/rating")
-	public ResponseEntity<String> doRating(@RequestBody RatingDto rating) {
-
-		return bookService.doRating(rating);
-
-	}
-	
-	@PostMapping("/update/rating")
-	public ResponseEntity<String> updateRating(@RequestBody RatingDto rating) {
-
-		return doRating(rating);
-
-	}
-	
-	
-	@GetMapping("/rating/{bookid}")
-	public ResponseEntity<List<RatingDto>> getAllRating(@PathVariable Long bookid) {
-
-		return bookService.getAllRating(bookid);
-
-	}
-	
+//	
+//	@PostMapping("/rating")
+//	public ResponseEntity<String> doRating(@RequestBody RatingDto rating) {
+//
+//		return bookService.doRating(rating);
+//
+//	}
+//	
+//	@PostMapping("/update/rating")
+//	public ResponseEntity<String> updateRating(@RequestBody RatingDto rating) {
+//
+//		return doRating(rating);
+//
+//	}
+//	
+//	
+//	@GetMapping("/rating/{bookid}")
+//	public ResponseEntity<List<RatingDto>> getAllRating(@PathVariable Long bookid) {
+//
+//		return bookService.getAllRating(bookid);
+//
+//	}
+//	
 	
 	
 	

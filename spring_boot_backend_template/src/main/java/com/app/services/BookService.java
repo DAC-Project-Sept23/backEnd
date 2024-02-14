@@ -13,21 +13,19 @@ import com.app.entities.Genre;
 import com.app.entities.Rating;
 
 public interface BookService {
-	ResponseEntity<String> uploadBook(EbookDto ebook)
-			throws IOException;
-	
+	ResponseEntity<String> uploadBook(EbookDto ebook) throws IOException;
+
 	ResponseEntity<List<GetAllEbookDto>> getAllBooks() throws IOException;
 
-	
-	 ResponseEntity<List<GetAllEbookDto>> getAllPendingBooks();
-	
+	ResponseEntity<List<GetAllEbookDto>> getAllPendingBooks();
+
 	ResponseEntity<List<GetAllEbookDto>> getAllBooksGenre(Genre genre);
 
 	ResponseEntity<GetEbookDto> getByBookId(Long id);
 
 	ResponseEntity<List<GetAllEbookDto>> getBookByUserId(Long userid);
 
-     ResponseEntity<List<GetAllEbookDto>> getAllRejectedBooks();
+	ResponseEntity<List<GetAllEbookDto>> getAllRejectedBooks();
 
 	ResponseEntity<List<GetAllEbookDto>> getAllApprovedBooks();
 
@@ -35,5 +33,6 @@ public interface BookService {
 
 	ResponseEntity<List<RatingDto>> getAllRating(Long bookId);
 
-	
+	ResponseEntity<String> deleteRatingById(Long userId, Long bookId);
+
 }

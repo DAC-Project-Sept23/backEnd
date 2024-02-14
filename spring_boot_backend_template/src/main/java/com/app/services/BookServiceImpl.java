@@ -22,7 +22,6 @@ import com.app.dto.EbookDto;
 import com.app.dto.GetAllEbookDto;
 import com.app.dto.GetEbookDto;
 import com.app.dto.RatingDto;
-import com.app.dto.RejectedBookDto;
 import com.app.entities.Ebook;
 import com.app.entities.Genre;
 import com.app.entities.Rating;
@@ -44,6 +43,7 @@ public class BookServiceImpl implements BookService {
 	private UserRepository userRepo;
 	@Autowired
 	private RatingRepository ratingRepo;
+	
 
 	@Autowired
 	private ModelMapper mapper;
@@ -160,6 +160,7 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public ResponseEntity<GetEbookDto> getByBookId(Long id) {
+	
 		Optional<Ebook> ebookOptional = bookRepo.findById(id);
 
 		if (ebookOptional.isPresent()) {
@@ -198,10 +199,10 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public ResponseEntity<String> doRating(RatingDto rating) {
-		User u = userRepo.findById(rating.getId().getUserId())
-				.orElseThrow(() -> new ResourceNotFoundException("User with id" + rating.getId().getUserId() + " not found"));
-		Ebook b = bookRepo.findById(rating.getId().getEbookId())
-				.orElseThrow(() -> new ResourceNotFoundException("book with id" + rating.getId().getEbookId() + " not found"));
+		User u = userRepo.findById(rating.getId().getUserId()).orElseThrow(
+				() -> new ResourceNotFoundException("User with id" + rating.getId().getUserId() + " not found"));
+		Ebook b = bookRepo.findById(rating.getId().getEbookId()).orElseThrow(
+				() -> new ResourceNotFoundException("book with id" + rating.getId().getEbookId() + " not found"));
 		System.out.println("Inside daRating mehtod");
 		Rating r = new Rating(new RatingId(u.getId(), b.getId()), u, b, rating.getComment(), rating.getRating());
 		Rating savedRating = ratingRepo.save(r);
@@ -213,22 +214,31 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public ResponseEntity<List<RatingDto>> getAllRating(Long bookId) {
-		List<Rating> list= ratingRepo.findByEbookId(bookId);
+		List<Rating> list = ratingRepo.findByEbookId(bookId);
 		return ResponseEntity.ok(convertToDtoList(list));
 	}
-	
+
 	public List<RatingDto> convertToDtoList(List<Rating> ratings) {
-        return ratings.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-    }
+		return ratings.stream().map(this::convertToDto).collect(Collectors.toList());
+	}
+
 	private RatingDto convertToDto(Rating rating) {
-        RatingDto dto= mapper.map(rating, RatingDto.class);
-       User u= userRepo.findById(rating.getUser().getId()).orElseThrow();
-       dto.setFirstName(u.getFirstName());
-       dto.setLastName(u.getLastName());
-       return dto;
-    }
+		RatingDto dto = mapper.map(rating, RatingDto.class);
+		User u = userRepo.findById(rating.getUser().getId()).orElseThrow();
+		dto.setFirstName(u.getFirstName());
+		dto.setLastName(u.getLastName());
+		return dto;
+	}
+
+	@Override
+	public ResponseEntity<String> deleteRatingById(Long userId, Long bookId) {
+		if (ratingRepo.findById(new RatingId(userId, bookId)).orElseThrow(()->new ResourceNotFoundException("Rating deletion failed")) != null) {
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<");
+			ratingRepo.deleteById(new RatingId(userId, bookId));
+			return ResponseEntity.ok("Rating deleted successfully");
+		}
+		return ResponseEntity.status(500).body("Rating deletion is failed");
+	}
 
 //	@Override
 //	public ResponseEntity<String> rejectBook(RejectedBookDto rDto) {
