@@ -52,13 +52,15 @@ public class WebSecurityConfig{
 				.authorizeRequests()
 				.antMatchers("/users/signup").permitAll()
 				.antMatchers("/users/authenticate").permitAll()
-				.antMatchers("/books/read").permitAll()
 				.antMatchers("/admin/**").hasRole("ADMIN")
+				.antMatchers("/wishlist/**").hasRole("USER")
+				.antMatchers("/transction/**").hasRole("USER")
 				.antMatchers("/books/pending").hasRole("ADMIN")
-				.antMatchers("/books/getUser/**").hasRole("ADMIN")
-				.antMatchers("/books/approved").hasRole("ADMIN")
 				.antMatchers("/books/rejected").hasRole("ADMIN")
-				.antMatchers("/books/upload").hasRole("ADMIN")
+				.antMatchers("/books/rejected/{userId}").hasRole("ADMIN")
+				.antMatchers("/books/upload").hasRole("USER")
+				.antMatchers("/books/genre").hasRole("USER")
+				.antMatchers("/rating").hasRole("USER")
 				.antMatchers("/swagger*/**", "/v*/api-docs/**").permitAll().antMatchers(HttpMethod.OPTIONS).permitAll()
 				.anyRequest().authenticated().and()
 				// Configure session management
@@ -66,12 +68,8 @@ public class WebSecurityConfig{
 				// Add JWT filter before UsernamePasswordAuthenticationFilter
 				.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
 
-		return http.build();
-	}
-
-
-	
-
+		return http.build();            
+	} 
 	// Configure AuthenticationManager bean
 	@Bean
 	public AuthenticationManager authenticatonMgr(AuthenticationConfiguration config) throws Exception {

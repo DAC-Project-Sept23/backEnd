@@ -29,7 +29,7 @@ public class Rating {
    
 
 	@EmbeddedId
-    private RatingId id;
+    private CompositKey id;
     
     @OneToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
@@ -46,13 +46,13 @@ public class Rating {
     
     private Timestamp timestamp;
 
-    public Rating(RatingId id, User user, Ebook ebook, String comment, int rating) {
+    public Rating(CompositKey id, User user, Ebook ebook, String comment, int rating) {
 		super();
 		this.id = id;
 		this.user = user;
 		this.ebook = ebook;
 		this.comment = comment;
-		this.rating = rating;
+		this.rating = rating;                                                                                                                                
 		// Get the current time in seconds precision
         long currentSeconds = Instant.now().getEpochSecond();
 

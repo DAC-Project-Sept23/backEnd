@@ -11,7 +11,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,51 +20,40 @@ import com.app.custom_exceptions.ResourceNotFoundException;
 import com.app.dto.EbookDto;
 import com.app.dto.GetAllEbookDto;
 import com.app.dto.GetEbookDto;
-import com.app.dto.RatingDto;
 import com.app.entities.Ebook;
 import com.app.entities.Genre;
-import com.app.entities.Rating;
-import com.app.entities.RatingId;
+import com.app.entities.Rejected;
 import com.app.entities.Status;
 import com.app.entities.User;
 import com.app.repositories.BookRepository;
-import com.app.repositories.RatingRepository;
+import com.app.repositories.TransactionRepository;
 import com.app.repositories.UserRepository;
 
 @Service
 @Transactional
 public class BookServiceImpl implements BookService {
 
-	private final String uploadDir = "src/main/resources/static";
+	private final String uploadDir = "";
 	@Autowired
 	private BookRepository bookRepo;
 	@Autowired
 	private UserRepository userRepo;
 	@Autowired
-	private RatingRepository ratingRepo;
-	
-
-	@Autowired
-	private ModelMapper mapper;
-
+	private TransactionRepository transRepo;
+	@Override
 	public ResponseEntity<String> uploadBook(EbookDto ebook) throws IOException {
-
-		System.out.println(ebook.getEpubFile().getOriginalFilename());
 		if (!ebook.getEpubFile().getOriginalFilename().endsWith(".epub")) {
 			return ResponseEntity.badRequest().body("Ebook to upload must be a .epub file.");
 		}
 		String currentWorkingDir = System.getProperty("user.dir");
-
+		String uploadDir = "src/main/resources/static";
 		File bookDir = new File(currentWorkingDir, uploadDir + File.separator + "books");
 		File imageDir = new File(currentWorkingDir, uploadDir + File.separator + "cover_images");
-
 		if (!bookDir.exists() && !bookDir.mkdirs())// bookDir.exists()-->check bookDir present or not if not then
 													// -->bookDir.mkdirs() create dir
 		{
-
 			return ResponseEntity.status(500).body("Failed to create book directory.");
 		}
-
 		if (!imageDir.exists() && !imageDir.mkdirs())// imageDir.exists()-->check imageDir present or not if not then
 														// -->imageDir.mkdirs() create dir
 		{
@@ -126,41 +114,49 @@ public class BookServiceImpl implements BookService {
 			return ResponseEntity.notFound().build();
 		}
 	}
+	private ResponseEntity<List<GetAllEbookDto>> getAllBooksInternalRejected(List<Object[]> books) {
+		if (books != null) {
+			List<GetAllEbookDto> dtos = books.stream().map(this::convertToDtoWithContentforGetAllBookRejected)
+					.collect(Collectors.toList());
+			return ResponseEntity.ok(dtos);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	private GetAllEbookDto convertToDtoWithContentforGetAllBookRejected(Object [] arr) {
+		try {
+		byte[] coverImageContent = FileUtils.readFileToByteArray(new File(((Ebook)arr[0]).getImagePath()));
+		Ebook ebook = (Ebook)arr[0];
+		Rejected rejected = (Rejected)arr[1];
+		return new GetAllEbookDto(ebook.getUser().getFirstName(), ebook.getUser().getLastName(), ebook.getId(),
+				ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(), ebook.getStatus(),
+				ebook.getProcessedBy().getId(), ebook.getProcessedOn(),coverImageContent, rejected.getComment(), ebook.getAddedOn());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ResourceNotFoundException("Content not found");
+		}
+	}
 
 	private GetAllEbookDto convertToDtoWithContentforGetAllBook(Ebook ebook) {
 		try {
-			byte[] coverImageContent = FileUtils.readFileToByteArray(new File(ebook.getImagePath()));
+		byte[] coverImageContent = FileUtils.readFileToByteArray(new File(ebook.getImagePath()));
 			if (ebook.getStatus() != Status.PENDING)
 				return new GetAllEbookDto(ebook.getUser().getFirstName(), ebook.getUser().getLastName(), ebook.getId(),
 						ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(), ebook.getStatus(),
-						ebook.getApprovedBy().getId(), ebook.getApprovedOn(), coverImageContent);
+						ebook.getProcessedBy().getId(), ebook.getProcessedOn(),coverImageContent, null, ebook.getAddedOn());
 			else
 				return new GetAllEbookDto(ebook.getUser().getFirstName(), ebook.getUser().getLastName(), ebook.getId(),
 						ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(), ebook.getStatus(),
-						coverImageContent);
+						coverImageContent, ebook.getAddedOn());
 
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ResourceNotFoundException("Content not found for ebook with ID: " + ebook.getId());
 		}
 	}
-
-	private GetEbookDto convertToDtoWithContent(Ebook ebook) {
-		try {
-			byte[] epubFileContent = FileUtils.readFileToByteArray(new File(ebook.getFilePath()));
-			byte[] coverImageContent = FileUtils.readFileToByteArray(new File(ebook.getImagePath()));
-
-			return new GetEbookDto(ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(),
-					epubFileContent, coverImageContent);
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new ResourceNotFoundException("Content not found for ebook with ID: " + ebook.getId());
-		}
-	}
-
 	@Override
 	public ResponseEntity<GetEbookDto> getByBookId(Long id) {
-	
 		Optional<Ebook> ebookOptional = bookRepo.findById(id);
 
 		if (ebookOptional.isPresent()) {
@@ -172,11 +168,34 @@ public class BookServiceImpl implements BookService {
 			throw new ResourceNotFoundException("Content not found for ebook with ID: " + id);
 		}
 	}
+	
+	private GetEbookDto convertToDtoWithContent(Ebook ebook) {
+		try {
+			byte[] coverImageContent = FileUtils.readFileToByteArray(new File(ebook.getImagePath()));
 
+			return new GetEbookDto(ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(),
+					ebook.getFilePath(), coverImageContent);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new ResourceNotFoundException("Content not found for ebook with ID: " + ebook.getId());
+		}
+	}
+	
 	@Override
-	public ResponseEntity<List<GetAllEbookDto>> getBookByUserId(Long userId) {
-
-		return getAllBooksInternal(bookRepo.getAllByUserId(userId));
+	public ResponseEntity<List<GetAllEbookDto>> getApprovedBookByUserId(Long userId) {
+		User u=userRepo.findById(userId).orElseThrow(()->new ResourceNotFoundException("User Not Found"));
+		return getAllBooksInternal(bookRepo.findByUserAndStatus(u, Status.APPROVED));
+	}
+	@Override
+	public ResponseEntity<?> getRejectedBookByUserId(Long userId) {
+		User u=userRepo.findById(userId).orElseThrow(()->new ResourceNotFoundException("User Not Found"));
+		return getAllBooksInternalRejected(bookRepo.findByUserRejected(userId));
+	}
+	
+	@Override
+	public ResponseEntity<List<GetAllEbookDto>> getPendingBookByUserId(Long userId) {
+		User u=userRepo.findById(userId).orElseThrow(()->new ResourceNotFoundException("User Not Found"));
+		return getAllBooksInternal(bookRepo.findByUserAndStatus(u, Status.PENDING));
 	}
 
 	@Override
@@ -196,57 +215,10 @@ public class BookServiceImpl implements BookService {
 		System.out.println(bookRepo.findByStatus(Status.PENDING));
 		return getAllBooksInternal(bookRepo.findByStatus(Status.PENDING));
 	}
-
+	
 	@Override
-	public ResponseEntity<String> doRating(RatingDto rating) {
-		User u = userRepo.findById(rating.getId().getUserId()).orElseThrow(
-				() -> new ResourceNotFoundException("User with id" + rating.getId().getUserId() + " not found"));
-		Ebook b = bookRepo.findById(rating.getId().getEbookId()).orElseThrow(
-				() -> new ResourceNotFoundException("book with id" + rating.getId().getEbookId() + " not found"));
-		System.out.println("Inside daRating mehtod");
-		Rating r = new Rating(new RatingId(u.getId(), b.getId()), u, b, rating.getComment(), rating.getRating());
-		Rating savedRating = ratingRepo.save(r);
-		if (savedRating != null) {
-			return ResponseEntity.ok("Rating added successfully");
-		}
-		return ResponseEntity.status(500).body("Failed to add rating");
+	public ResponseEntity<?> getPurchasedBooks(Long userId) {
+		return ResponseEntity.ok(getAllBooksInternal(transRepo.findBooksByUserId(userId)));
 	}
-
-	@Override
-	public ResponseEntity<List<RatingDto>> getAllRating(Long bookId) {
-		List<Rating> list = ratingRepo.findByEbookId(bookId);
-		return ResponseEntity.ok(convertToDtoList(list));
-	}
-
-	public List<RatingDto> convertToDtoList(List<Rating> ratings) {
-		return ratings.stream().map(this::convertToDto).collect(Collectors.toList());
-	}
-
-	private RatingDto convertToDto(Rating rating) {
-		RatingDto dto = mapper.map(rating, RatingDto.class);
-		User u = userRepo.findById(rating.getUser().getId()).orElseThrow();
-		dto.setFirstName(u.getFirstName());
-		dto.setLastName(u.getLastName());
-		return dto;
-	}
-
-	@Override
-	public ResponseEntity<String> deleteRatingById(Long userId, Long bookId) {
-		if (ratingRepo.findById(new RatingId(userId, bookId)).orElseThrow(()->new ResourceNotFoundException("Rating deletion failed")) != null) {
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<");
-			ratingRepo.deleteById(new RatingId(userId, bookId));
-			return ResponseEntity.ok("Rating deleted successfully");
-		}
-		return ResponseEntity.status(500).body("Rating deletion is failed");
-	}
-
-//	@Override
-//	public ResponseEntity<String> rejectBook(RejectedBookDto rDto) {
-//		Ebook ebook = bookRepo.findById(rDto.getBookId())
-//				.orElseThrow(() ->new ResourceNotFoundException("Book with id " + rDto.getBookId() + " not found"));
-//		ebook.setStatus(Status.REJECTED);
-//		
-//		return null;
-//	}
 
 }

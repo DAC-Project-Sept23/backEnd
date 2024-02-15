@@ -3,6 +3,7 @@ package com.app.repositories;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.app.entities.Ebook;
 import com.app.entities.Genre;
@@ -13,8 +14,12 @@ import com.app.entities.User;
 
 public interface BookRepository extends JpaRepository<Ebook, Long> {
 	List<Ebook> getAllByGenre(Genre genre);
-
 	List<Ebook> getAllByUserId(Long userId);
 	List<Ebook> findByStatus(Status sts);
-	List<Ebook> findByApprovedByAndStatus(User approvedby,Status sts);
+	List<Ebook>findByUserAndStatus(User u,Status status);
+	List<Ebook> findByProcessedByAndStatus(User processedBy,Status status);
+	@Query("SELECT e, r FROM Ebook e LEFT JOIN FETCH Rejected r ON e.id = r.ebook.id " +
+		       "WHERE e.user.id = :userId AND r.timestamp = (SELECT MAX(r2.timestamp) FROM Rejected r2 WHERE r2.author.id = :userId)")
+	List<Object[]> findByUserRejected(Long userId);
+
 }

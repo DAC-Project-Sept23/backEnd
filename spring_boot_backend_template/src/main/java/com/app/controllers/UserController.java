@@ -24,24 +24,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dto.AuthRequest;
 import com.app.dto.AuthResp;
+import com.app.dto.ChangePassDto;
 import com.app.dto.UserDto;
 import com.app.dto.UserResult;
+import com.app.dto.UserUpdateDto;
 import com.app.entities.User;
 import com.app.jwt_utils.JwtUtils;
 import com.app.services.CustomUserDetails;
 import com.app.services.CustomUserDetailsService;
 import com.app.services.UserService;
 
-import lombok.val;
-
 @RestController
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RequestMapping("/users")
-public class UserController {
-
+public class UserController{
+	
 	@Autowired
 	private UserService userService;
-
+	
+	
+	
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
@@ -50,8 +52,10 @@ public class UserController {
 	
 	@Autowired
 	private JwtUtils utils;
-
-	@PostMapping("/signup")
+	
+	
+   @PostMapping("/signup")
+   //@PostMapping(value = "/signup", consumes = "form-data")
 	public ResponseEntity<UserResult> userSignup(@RequestBody UserDto user) {
 		return userService.userSignup(user);
 
@@ -83,9 +87,26 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
 		}
 	}
-
-	@GetMapping("/getUser/{userId}")
-	public ResponseEntity<UserDto> getUserByUserId(@PathVariable Long userId) {
-		return userService.getUserByUserId(userId);
-	}
+   
+   
+   
+   @GetMapping("/getUser/{userId}")
+   public ResponseEntity<UserDto> getUserByUserId(@PathVariable Long userId){
+      return userService.getUserByUserId(userId);
+   }
+   
+   @PostMapping("/update/password/{id}")
+   public ResponseEntity<String> passwordUpdate(@RequestBody ChangePassDto passupdate,@PathVariable Long id){
+    
+    passupdate.setUserId(id);
+    
+     return userService.setNewPass(passupdate);
+   }
+   
+   @PostMapping("/update/details/{userId}")
+   public ResponseEntity<String> userUpdate(@RequestBody UserUpdateDto user ,@PathVariable Long userId){
+	    user.setId(userId);
+	     
+	     return ResponseEntity.ok(userService.updateUser(user));
+   }
 }

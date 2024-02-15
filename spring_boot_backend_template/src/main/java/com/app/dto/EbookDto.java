@@ -24,7 +24,7 @@ private Long userId;
 	private String description;
 	private double price;
 
-	// Fields for EPUB file and cover image
+	
 
 	private MultipartFile epubFile;
 	
@@ -62,7 +62,4 @@ private Long userId;
 	    this.epubFileContent = epubFileContent;
 	    this.coverImageContent = coverImageContent;
 	}
-
-	
-
 }

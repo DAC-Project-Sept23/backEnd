@@ -12,5 +12,5 @@ public interface AdminService {
 	
 	public ResponseEntity<List<GetAllEbookDto>> getRejectedBookByAdminId(Long userId);
 	public ResponseEntity<List<GetAllEbookDto>> getApprovedBookByAdminId(Long userId);
-	ResponseEntity<String> approveBook(ProcessDto dto);
+	ResponseEntity<String> processBook(ProcessDto dto);
 }

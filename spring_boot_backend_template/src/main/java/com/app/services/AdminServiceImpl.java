@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,39 +40,38 @@ public class AdminServiceImpl implements AdminService {
 	private RejectedBookRepository rejectedBookRepo;
 
 	@Override
-	public ResponseEntity<String> approveBook(ProcessDto dto) {
+	public ResponseEntity<String> processBook(ProcessDto dto) {
 		System.out.println("in approve book "+dto);
 		Ebook book1 = book.findById(dto.getBookId())
 				.orElseThrow(() -> new ResourceNotFoundException("Book with id " + dto.getBookId() + " not found"));
 		User admin = user.getReferenceById(dto.getAdminId());
 
-		book1.setApprovedBy(admin);
-		book1.setApprovedOn(new Timestamp(Instant.now().getEpochSecond() * 1000));
-		book1.setStatus(dto.getSts());
+		book1.setProcessedBy(admin);
+		book1.setProcessedOn(new Timestamp(Instant.now().getEpochSecond() * 1000));
+		book1.setStatus(dto.getStatus());
 
-		if (dto.getSts() == Status.APPROVED) {
+		if (dto.getStatus() == Status.APPROVED) {
 			return ResponseEntity.ok("Book is Approved");
 
 		}
-		Rejected rejectedBook = new Rejected(book1.getFilePath(),admin,book1.getUser(),dto.getComment());
+		Rejected rejectedBook = new Rejected(book1.getTitle(),book1.getFilePath(),admin,book1.getUser(),dto.getComment());
 		rejectedBookRepo.save(rejectedBook);
+		
 		return ResponseEntity.ok("Book is rejected");
 	}
 
 	@Override
 	public ResponseEntity<List<GetAllEbookDto>> getRejectedBookByAdminId(Long userId) {
 		User u = user.getReferenceById(userId);
-	
-		System.out.println(book.findByApprovedByAndStatus(u, Status.REJECTED));
-		return getAllBooksInternal(book.findByApprovedByAndStatus(u, Status.REJECTED));
+		return getAllBooksInternal(book.findByProcessedByAndStatus(u, Status.REJECTED));
 
 	}
 
 	@Override
 	public ResponseEntity<List<GetAllEbookDto>> getApprovedBookByAdminId(Long userId) {
 		User u = user.getReferenceById(userId);
-		System.out.println(book.findByApprovedByAndStatus(u, Status.APPROVED));
-		return getAllBooksInternal(book.findByApprovedByAndStatus(u, Status.APPROVED));
+		System.out.println(book.findByProcessedByAndStatus(u, Status.APPROVED));
+		return getAllBooksInternal(book.findByProcessedByAndStatus(u, Status.APPROVED));
 
 	}
 
@@ -84,32 +84,31 @@ public class AdminServiceImpl implements AdminService {
 			return ResponseEntity.notFound().build();
 		}
 	}
-
 	private GetAllEbookDto convertToDtoWithContentforGetAllBook(Ebook ebook) {
 		try {
 			byte[] coverImageContent = FileUtils.readFileToByteArray(new File(ebook.getImagePath()));
 			if (ebook.getStatus() != Status.PENDING)
 				return new GetAllEbookDto(ebook.getUser().getFirstName(), ebook.getUser().getLastName(), ebook.getId(),
 						ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(), ebook.getStatus(),
-						ebook.getApprovedBy().getId(), ebook.getApprovedOn(), coverImageContent);
+						ebook.getProcessedBy().getId(), ebook.getProcessedOn(), coverImageContent);
 			else
 				return new GetAllEbookDto(ebook.getUser().getFirstName(), ebook.getUser().getLastName(), ebook.getId(),
 						ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(), ebook.getStatus(),
-						coverImageContent);
+						coverImageContent, ebook.getAddedOn());
 
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			throw new ResourceNotFoundException("Content not found for ebook with ID: " + ebook.getId());
-		}
+		throw new ResourceNotFoundException("Content not found for ebook with ID: " + ebook.getId());
+	}
 	}
 
 	private GetEbookDto convertToDtoWithContent(Ebook ebook) {
 		try {
-			byte[] epubFileContent = FileUtils.readFileToByteArray(new File(ebook.getFilePath()));
+			//byte[] epubFileContent = FileUtils.readFileToByteArray(new File(ebook.getFilePath()));
 			byte[] coverImageContent = FileUtils.readFileToByteArray(new File(ebook.getImagePath()));
 
 			return new GetEbookDto(ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(),
-					epubFileContent, coverImageContent);
+					ebook.getFilePath(), coverImageContent);
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new ResourceNotFoundException("Content not found for ebook with ID: " + ebook.getId());

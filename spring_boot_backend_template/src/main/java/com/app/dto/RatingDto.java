@@ -1,11 +1,6 @@
 package com.app.dto;
+import java.sql.Timestamp;
 
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
-import com.app.entities.RatingId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -21,16 +16,13 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class RatingDto {
-//	private Long userId;
-//	private Long bookId;
-	private RatingId id;
+	private Long userId;
+	private Long bookId;
 	@JsonProperty(access = Access.READ_ONLY)
 	private String firstName;
 	@JsonProperty(access = Access.READ_ONLY)
 	private String lastName;
 	private String comment;
-	@NotNull
-	@Min(value = 0 ,message = "Rating must be greater than or equal to 0")
-	@Max(value = 5 ,message = "Rating must be less than or equal to 5")
 	private int rating;
+	private Timestamp timestamp; 
 }

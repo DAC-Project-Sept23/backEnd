@@ -2,14 +2,11 @@ package com.app.entities;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -44,7 +41,7 @@ public class Ebook extends BaseEntity {
 	@Column(name = "images_path")
 	private String imagePath;
 	@Column(name = "added_on")
-	private Timestamp addedOn;//upload
+	private Timestamp addedOn;
 	@Column
     private boolean isRemoved;
 	
@@ -53,15 +50,14 @@ public class Ebook extends BaseEntity {
 	private Status status;
 	
 	@ManyToOne
-	@JoinColumn(name="approved_by")
-	private User approvedBy;
+	@JoinColumn(name="processed_by")
+	private User processedBy;
 	
 	//Approved Time Stamp
 	
-	@Column(name = "approved_on")
-	private Timestamp approvedOn;
+	@Column(name = "processed_on" )
+	private Timestamp processedOn;
 	
-	//(String, Genre, String, double, String, String) is undefined
 	public Ebook( String title, Genre genre, String description, double price, String filePath,
 			String imagePath) {
 		
@@ -90,9 +86,5 @@ public class Ebook extends BaseEntity {
 		this.status=Status.PENDING;
 	
 	}
-	
-	//(long, String, Genre, String, double, String, String)
-	
-
 	
 }

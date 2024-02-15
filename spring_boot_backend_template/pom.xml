@@ -110,6 +110,16 @@
 </dependency>
 
 
+
+
+
+		<dependency>
+			<groupId>com.stripe</groupId>
+			<artifactId>stripe-java</artifactId>
+			<version>20.51.0</version> <!-- Replace with the latest version -->
+		</dependency>
+
+
 	</dependencies>
 
 	<build>

@@ -1,35 +1,30 @@
 package com.app.controllers;
-
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import com.app.dto.EbookDto;
 import com.app.dto.GetAllEbookDto;
 import com.app.dto.GetEbookDto;
-import com.app.dto.RatingDto;
-import com.app.dto.RejectedBookDto;
 import com.app.entities.Genre;
-import com.app.entities.Rating;
 import com.app.services.BookService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RequestMapping("/books")
 public class BookController {
-	
 
 	@Autowired
 	private BookService bookService;
@@ -62,17 +57,28 @@ public class BookController {
 	}
 	
 	@GetMapping("/read/{id}")
-	//@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<GetEbookDto> getByBookId(@PathVariable Long id) {
 
 		return bookService.getByBookId(id);
 
 	}
 	
-	@GetMapping("/user/{userId}")
-	public ResponseEntity<List<GetAllEbookDto>> getBooksByUserId(@PathVariable Long userId) {
+	@GetMapping("/user/approved/{userId}")
+	public ResponseEntity<List<GetAllEbookDto>> getApprovedBooksByUserId(@PathVariable Long userId) {
 
-		return bookService.getBookByUserId(userId);
+		return bookService.getApprovedBookByUserId(userId);
+
+	}
+	@GetMapping("/user/pending/{userId}")
+	public ResponseEntity<List<GetAllEbookDto>> getPendingBooksByUserId(@PathVariable Long userId) {
+
+		return bookService.getPendingBookByUserId(userId);
+
+	}
+	@GetMapping("/user/rejected/{userId}")
+	public ResponseEntity<?> getRejectedBooksByUserId(@PathVariable Long userId) {
+
+		return bookService.getRejectedBookByUserId(userId);
 
 	}
 	
@@ -94,34 +100,11 @@ public class BookController {
 		return bookService.getAllPendingBooks();
 
 	}
-//	
-//	@PostMapping("/rating")
-//	public ResponseEntity<String> doRating(@RequestBody RatingDto rating) {
-//
-//		return bookService.doRating(rating);
-//
-//	}
-//	
-//	@PostMapping("/update/rating")
-//	public ResponseEntity<String> updateRating(@RequestBody RatingDto rating) {
-//
-//		return doRating(rating);
-//
-//	}
-//	
-//	
-//	@GetMapping("/rating/{bookid}")
-//	public ResponseEntity<List<RatingDto>> getAllRating(@PathVariable Long bookid) {
-//
-//		return bookService.getAllRating(bookid);
-//
-//	}
-//	
-	
-	
-	
-
-
+	@GetMapping("/purchased/{userId}")
+	   ResponseEntity<?> getPurchasedBooks(@PathVariable Long userId)
+	   {
+		   return bookService.getPurchasedBooks(userId);
+	   }
 	
 
 }

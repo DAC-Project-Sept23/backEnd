@@ -21,7 +21,8 @@ import com.app.services.AdminService;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+//@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/admin")
 public class AdminController {
 
@@ -29,10 +30,10 @@ public class AdminController {
 	private AdminService adminctrl;
 	
 	@PostMapping("/process")
-	public ResponseEntity<String> approveBook(@RequestBody ProcessDto admDto) {
+	public ResponseEntity<String> processBook(@RequestBody ProcessDto admDto) {
 		
 		
-		return adminctrl.approveBook(admDto);
+		return adminctrl.processBook(admDto);
 	}
 	
 
