@@ -24,10 +24,10 @@ public class GetEbookDto {
 	private Genre genre;
 	private String description;
 	private double price;
-	private String epubPath;
+	private String filePath;
 
-	private String base64EpubContent;
-    private byte[] epubFileContent;
+	//private String base64EpubContent;
+    //private byte[] epubFileContent;
     private byte[] coverImageContent;
 
     public GetEbookDto(String title, Genre genre, String description, double price, byte[] epubFileContent, byte[] coverImageContent) {
@@ -35,7 +35,7 @@ public class GetEbookDto {
         this.genre = genre;
         this.description = description;
         this.price = price;
-        this.epubFileContent = epubFileContent;
+        //this.epubFileContent = epubFileContent;
         this.coverImageContent = coverImageContent;
     }
     public GetEbookDto(String title, Genre genre, String description, double price, String epubPath) {
@@ -43,15 +43,15 @@ public class GetEbookDto {
         this.genre = genre;
         this.description = description;
         this.price = price;
-        this.epubPath = epubPath;
+        this.filePath = epubPath;
     }
     public GetEbookDto(String path) {
-		this.epubPath = path;
+		this.filePath = path;
 	}
 
 	// Fields for EPUB file and cover image
 	//private String imagePath;
-	private String filePath;
+	//private String imagePath;
 
 
 	public GetEbookDto(String title, Genre genre, String description, double price,
@@ -60,14 +60,12 @@ public class GetEbookDto {
 		this.genre = genre;
 		this.description = description;
 		this.price = price;
+		
 		System.out.println(filePath);
 		String[] parts = filePath.split("\\\\");
 		System.out.println(Arrays.toString(parts));
-		try{
-			this.filePath=parts[5];
-		}catch (Exception e) {
-			throw new ResourceNotFoundException("Please try again later.");
-		}
+		this.filePath=parts[5];
+		
 		this.coverImageContent = coverImageContent;
 	}
 
