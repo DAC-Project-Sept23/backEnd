@@ -43,7 +43,10 @@ public class GetEbookDto {
         this.genre = genre;
         this.description = description;
         this.price = price;
-        this.filePath = epubPath;
+        System.out.println("Orignal path : "+filePath);
+		String[] parts = filePath.split("\\\\");
+		System.out.println("Required path : "+parts[5]);
+		this.filePath=parts[5];
     }
     public GetEbookDto(String path) {
 		this.filePath = path;
@@ -61,9 +64,9 @@ public class GetEbookDto {
 		this.description = description;
 		this.price = price;
 		
-		System.out.println(filePath);
+		System.out.println("Orignal path : "+filePath);
 		String[] parts = filePath.split("\\\\");
-		System.out.println(Arrays.toString(parts));
+		System.out.println("Required path : "+parts[5]);
 		this.filePath=parts[5];
 		
 		this.coverImageContent = coverImageContent;
