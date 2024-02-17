@@ -247,7 +247,7 @@ public class WebSecurityConfig {
 				.authorizeRequests()
 				.antMatchers("/users/signup").permitAll()
 				.antMatchers("/users/authenticate").permitAll()
-				.antMatchers("/books/**").permitAll()	
+				//.antMatchers("/books/**").permitAll()	
 				.antMatchers("/admin/**").hasRole("ADMIN")
 				.antMatchers("/wishlist/**").hasRole("USER")
 				.antMatchers("/transction/**").hasRole("USER")
