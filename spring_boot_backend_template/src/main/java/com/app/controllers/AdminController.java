@@ -18,8 +18,6 @@ import com.app.dto.ProcessDto;
 
 import com.app.services.AdminService;
 
-
-
 @RestController
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 
