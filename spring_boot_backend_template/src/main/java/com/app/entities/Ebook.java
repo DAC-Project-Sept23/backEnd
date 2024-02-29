@@ -2,8 +2,9 @@ package com.app.entities;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-
-
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -21,7 +22,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Table(name = "ebooks")
 public class Ebook extends BaseEntity {
 	@JsonProperty(access = Access.READ_ONLY)
@@ -40,10 +40,9 @@ public class Ebook extends BaseEntity {
 	@Column(name = "images_path")
 	private String imagePath;
 	@Column(name = "added_on")
-	private Timestamp addedOn;//upload
-	@Column
-    private boolean isRemoved;
-	
+	private Timestamp addedOn;
+	private double revenue;
+	private double rating;
 	@Enumerated(EnumType.STRING)
 	@Column(name="status",length=20)
 	private Status status;
@@ -57,7 +56,6 @@ public class Ebook extends BaseEntity {
 	@Column(name = "processed_on" )
 	private Timestamp processedOn;
 	
-
 	public Ebook( String title, Genre genre, String description, double price, String filePath,
 			String imagePath) {
 		
@@ -69,7 +67,6 @@ public class Ebook extends BaseEntity {
 		this.imagePath = imagePath;
 		// Get the current time in seconds precision
         long currentSeconds = Instant.now().getEpochSecond();
-        
 
         // Create a Timestamp without milliseconds
         this.addedOn = new Timestamp(currentSeconds * 1000);
@@ -88,5 +85,4 @@ public class Ebook extends BaseEntity {
 	
 	}
 	
-
 }

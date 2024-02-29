@@ -31,6 +31,7 @@ public class UserDto {
 	private LocalDate dob;
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
-	private Role role;
+	private String role;
+	private String otp;
 
 }

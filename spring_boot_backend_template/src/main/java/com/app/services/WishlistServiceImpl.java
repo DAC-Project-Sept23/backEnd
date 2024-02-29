@@ -1,19 +1,15 @@
-
-	package com.app.services;
+package com.app.services;
 
 import java.io.File;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import javax.transaction.Transactional;
-
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import com.app.custom_exceptions.ResourceNotFoundException;
 import com.app.dto.GetAllEbookDto;
 import com.app.entities.Ebook;
@@ -25,6 +21,7 @@ import com.app.repositories.UserRepository;
 @Service
 @Transactional
 public class WishlistServiceImpl implements WishlistService {
+
 	@Autowired
 	private UserRepository userRepo;
 	
@@ -74,16 +71,25 @@ public class WishlistServiceImpl implements WishlistService {
 			if (ebook.getStatus() != Status.PENDING)
 				return new GetAllEbookDto(ebook.getUser().getFirstName(), ebook.getUser().getLastName(), ebook.getId(),
 						ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(), ebook.getStatus(),
-						ebook.getProcessedBy().getId(), ebook.getProcessedOn(),coverImageContent);
+						ebook.getProcessedBy().getId(), ebook.getProcessedOn(),coverImageContent, ebook.getRevenue());
 			else
 				return new GetAllEbookDto(ebook.getUser().getFirstName(), ebook.getUser().getLastName(), ebook.getId(),
 						ebook.getTitle(), ebook.getGenre(), ebook.getDescription(), ebook.getPrice(), ebook.getStatus(),
-						coverImageContent);
+						coverImageContent, ebook.getAddedOn(), ebook.getRevenue());
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ResourceNotFoundException("Content not found for ebook with ID: " + ebook.getId());
 		}
+	}
+	@Override
+	public ResponseEntity<?> getBareWishlistByUserId(Long userId) {
+		User u = userRepo.findById(userId).orElseThrow(()->new ResourceNotFoundException("User Not Found"));
+		Set<Ebook> wishlist = u.getWishlist();
+		wishlist.size();
+		List<Long> list = wishlist.stream().map(w -> w.getId())
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(list);
 	}
 	
 

@@ -6,6 +6,7 @@ import java.time.Instant;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -35,19 +36,18 @@ public class Rejected extends BaseEntity {
 	private User author;
 	private String comment;
 	private Timestamp timestamp;
-	public Rejected(String title,String bookPath, User admin, User author, String comment) {
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Ebook ebook;
+	public Rejected(String title,String bookPath, User admin, User author, String comment, Ebook ebook) {
 		super();
 		this.title=title;
 		this.bookPath = bookPath;
 		this.admin = admin;
 		this.author = author;
 		this.comment = comment;
-		// Get the current time in seconds precision
         long currentSeconds = Instant.now().getEpochSecond();
-
-        // Create a Timestamp without milliseconds
         this.timestamp = new Timestamp(currentSeconds * 1000);
-		
+        this.ebook = ebook;
 	}
 	
 	

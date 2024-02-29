@@ -26,8 +26,6 @@ import lombok.ToString;
 @Table(name = "ratings")
 public class Rating {
     
-   
-
 	@EmbeddedId
     private CompositKey id;
     

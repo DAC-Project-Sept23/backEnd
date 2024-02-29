@@ -17,15 +17,12 @@ import lombok.ToString;
 @Setter
 @ToString
 public class EbookDto {
-
-private Long userId;
+	private Long bookId;
+    private Long userId;
 	private String title;
 	private Genre genre;
 	private String description;
 	private double price;
-
-	// Fields for EPUB file and cover image
-
 	private MultipartFile epubFile;
 	
 	private MultipartFile coverImage;
@@ -62,7 +59,4 @@ private Long userId;
 	    this.epubFileContent = epubFileContent;
 	    this.coverImageContent = coverImageContent;
 	}
-
-	
-
 }

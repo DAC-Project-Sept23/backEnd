@@ -1,73 +1,79 @@
 package com.app.services;
 
-import java.util.List;
+
 
 import javax.transaction.Transactional;
-
-import org.apache.catalina.mapper.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.app.custom_exceptions.ResourceNotFoundException;
 import com.app.dto.ChangePassDto;
 import com.app.dto.UserDto;
 import com.app.dto.UserResult;
 import com.app.dto.UserUpdateDto;
-import com.app.entities.Ebook;
 import com.app.entities.User;
-
-import com.app.repositories.BookRepository;
 import com.app.repositories.UserRepository;
-import com.app.repositories.WishlistRepository;
+
+
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepo;
-	@Autowired
-	private BookRepository bookRepo;
-//	@Autowired
-//	private WishlistRepository wishRepo;
-@Autowired
-private ModelMapper mapper;
-	@Override
-	public ResponseEntity<UserResult> userSignup(UserDto user) {
-		User u = new User(user.getId(),user.getFirstName(), user.getLastName(), user.getEmail(), user.getRole(), user.getPassword(),
-				user.getDob());
-		
-		
-		if (u != null) {
-			userRepo.save(u);
-			UserResult result = new UserResult(u, true, "SignUp Successful");
-			return new ResponseEntity<UserResult>(result, HttpStatus.CREATED);
-		}
-		String errorMessage = "Failed to sign up. Please try again.";
-		UserResult userResult = new UserResult(null, false, errorMessage);
-		return new ResponseEntity<>(userResult, HttpStatus.UNAUTHORIZED);
-	}
+    @Autowired
+    private ModelMapper mapper;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+	@Override
+	public ResponseEntity<?> userSignup(UserDto user) 
+	{
+		String encodedPassword = passwordEncoder.encode(user.getPassword());
+		User u = new User();
+		u.setDob(user.getDob());
+		u.setFirstName(user.getFirstName());
+		u.setLastName(user.getLastName());
+		u.setPassword(encodedPassword);
+		u.setRoleFromString(user.getRole());
+		u.setEmail(user.getEmail());
+		System.out.println(u.toString());
+		try {
+			userRepo.save(u);
+			return ResponseEntity.ok("Registration successful.");
+		}catch(Exception e)
+		{
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email id already exists, please login.");
+		}
+			
+	}
 	@Override
 	public ResponseEntity<UserDto> getUserByUserId(Long userId) {
 		User u = userRepo.findById(userId).orElseThrow(()->new ResourceNotFoundException("User with user id "+userId+" not exist"));
 		
 		return ResponseEntity.ok(mapper.map(u,UserDto.class));
 	}
-
 	@Override
 	public ResponseEntity<String> setNewPass(ChangePassDto passChange) {
-		User user=userRepo.findById(passChange.getUserId()).orElseThrow(()->new ResourceNotFoundException("User Not Found"));
-		if(user.getPassword().equals(passChange.getOldPass()))
-		{
-			user.setPassword(passChange.getNewPass());
-			return ResponseEntity.ok("Password updated successfully");
-		}
-		else
-		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Old password is incorrect");
-	}
+	    User user = userRepo.findById(passChange.getUserId())
+	                         .orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
 
+	    if (passwordEncoder.matches(passChange.getOldPass(), user.getPassword())) {
+	        if (passwordEncoder.matches(passChange.getNewPass(), user.getPassword())) {
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+	                                 .body("New Password can not be same as old password.");
+	        }
+	        user.setPassword(passwordEncoder.encode(passChange.getNewPass()));
+	        userRepo.save(user); // Save the updated user
+	        return ResponseEntity.ok("Password updated successfully");
+	    } else {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+	                             .body("Old password is incorrect");
+	    }
+	}
 	@Override
 	public String updateUser(UserUpdateDto user) {
 		User u=userRepo.findById(user.getId()).orElseThrow(()->new ResourceNotFoundException("User Not Found"));
@@ -76,26 +82,20 @@ private ModelMapper mapper;
 		maper.map(user,u);
 		return "User Updated";
 	}
-
-//	@Override
-//	public ResponseEntity<String> addWishlist(Long bookId, Long userId) {
-//	User u=	userRepo.getReferenceById(userId);
-//	Ebook b=bookRepo.getReferenceById(bookId);
-//	
-//	WishlistId id=new WishlistId();
-//	id.setBook(b);
-//	id.setUser(u);
-//	Wishlist wish=new Wishlist();
-//	wish.setId(id);
-//	wishRepo.save(wish);
-//	return ResponseEntity.ok("Book Added To Wishlist");
-//	}
-
-//	@Override
-//	public ResponseEntity<List<Ebook>> findBookByUserId(Long userId) {
-//		User u=userRepo.getReferenceById(userId);
-//	System.out.println(wishRepo.findBooksByUserId(u));
-//		return null;//wishRepo.findBooksByUserId(userId) ;
-//	}
-
+	@Override
+	public Long findUserId(String userName) {
+		User user = userRepo.findByEmail(userName)
+				.orElseThrow(()-> new RuntimeException("Invalid Email"));
+		
+		return user.getId();
+	
+	}
+	@Override
+	public ResponseEntity<?> setNewPasswordAfterForget(ChangePassDto passChange) {
+		    User user = userRepo.findByEmail(passChange.getEmail())
+		                         .orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
+		        user.setPassword(passwordEncoder.encode(passChange.getNewPass()));
+		        userRepo.save(user); // Save the updated user
+		        return ResponseEntity.ok("Password updated successfully");
+		}
 }

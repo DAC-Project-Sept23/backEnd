@@ -1,27 +1,21 @@
 package com.app.controllers;
-
-import java.io.IOException;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.app.dto.EbookDto;
 import com.app.dto.GetAllEbookDto;
 import com.app.dto.GetEbookDto;
-import com.app.dto.RatingDto;
-import com.app.dto.RejectedBookDto;
 import com.app.entities.Genre;
-import com.app.entities.Rating;
 import com.app.services.BookService;
 
 @RestController
@@ -72,6 +66,18 @@ public class BookController {
 		return bookService.getApprovedBookByUserId(userId);
 
 	}
+	@GetMapping("/user/pending/{userId}")
+	public ResponseEntity<List<GetAllEbookDto>> getPendingBooksByUserId(@PathVariable Long userId) {
+
+		return bookService.getPendingBookByUserId(userId);
+
+	}
+	@GetMapping("/user/rejected/{userId}")
+	public ResponseEntity<?> getRejectedBooksByUserId(@PathVariable Long userId) {
+
+		return bookService.getRejectedBookByUserId(userId);
+
+	}
 	
 	@GetMapping("/rejected")
 	public ResponseEntity<List<GetAllEbookDto>> getAllNonApprovedBooks() {
@@ -91,16 +97,32 @@ public class BookController {
 		return bookService.getAllPendingBooks();
 
 	}
-	
+	@GetMapping("/purchased/{userId}")
+	   ResponseEntity<?> getPurchasedBooks(@PathVariable Long userId)
+	   {
+		   return bookService.getPurchasedBooks(userId);
+	   }
+	@GetMapping("/own/{userId}")
+	public ResponseEntity<?> getOwnBooks(@PathVariable Long userId) {
 
-	
-	
+		return bookService.getOwnPendingBooks(userId);
 
+	}
+	@DeleteMapping("/delete/{bookId}")
+	public ResponseEntity<?> deleteBook(@PathVariable Long bookId)
+	{
+		return bookService.deleteBook(bookId);
+	}
 	
-	
-	
-
-
+	@PutMapping(value = "/update", consumes = "multipart/form-data")
+	public ResponseEntity<?> updateBook(@ModelAttribute("epubFile") EbookDto ebookDto) {
+		try {
+			return bookService.updateBook(ebookDto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(500).body("Failed to upload book.");
+		}
+	}
 	
 
 }

@@ -30,21 +30,18 @@ public class User extends BaseEntity {
 	private String firstName;
 	@Column(name="last_name")
 	private String lastName;
+	@Column(unique = true)
 	private String email;
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	private String password;
 	private LocalDate dob;
-
 	@JsonIgnore
-
 	   @ManyToMany(fetch = FetchType.LAZY)
 	    @JoinTable(name = "user_wishlist",
 	            joinColumns = @JoinColumn(name = "user_id"),
 	            inverseJoinColumns = @JoinColumn(name = "book_id"))
-
 	 private Set<Ebook> wishlist = new HashSet<>();
-
 	   
 	   public User(Long id,String firstName, String lastName, String email,Role role,String password,
 			LocalDate dob)
@@ -57,7 +54,6 @@ public class User extends BaseEntity {
 		   this.password=password;
 		   this.dob=dob;
 	   }
-
 	   public void AddBookToWishList(Ebook book)
 	   {
 		   wishlist.add(book);
@@ -66,6 +62,15 @@ public class User extends BaseEntity {
 	   {
 		   wishlist.remove(book);
 	   }
+	   public void setRoleFromString(String role) {
+	        if (role.equalsIgnoreCase("ROLE_USER")) {
+	        	this.role = Role.ROLE_USER;
+	        }
+	        else
+	        {
+	        	this.role = Role.ROLE_ADMIN;
+	        }
+	    }
 
 	
 }

@@ -24,5 +24,6 @@ public class ChangePassDto {
 	Long UserId;
 	String oldPass;
 	String newPass;
+	String email;
 
 }

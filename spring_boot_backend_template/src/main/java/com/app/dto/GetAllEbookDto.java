@@ -29,8 +29,10 @@ public class GetAllEbookDto {
 	private Timestamp processedOn;
 	private String comment;
     private byte[] coverImageContent;
-
-    public GetAllEbookDto(String firstName,String lastName,Long id,String title,Genre genre, String description, double price, Status sts,Long processedBy,Timestamp processedOn,byte[] coverImageContent) {
+    private Timestamp addedOn;
+    private double revenue;
+    private double rating;
+    public GetAllEbookDto(String firstName,String lastName,Long id,String title,Genre genre, String description, double price, Status sts,Long processedBy,Timestamp processedOn,byte[] coverImageContent, double revenue) {
       
     	this.id=id;
     	this.firstName=firstName;
@@ -43,10 +45,10 @@ public class GetAllEbookDto {
         this.status=sts;
         this.processedBy=processedBy;
         this.processedOn=processedOn;
+        this.revenue = revenue;
     }
     
-    //for rejected with comment
-    public GetAllEbookDto(String firstName,String lastName,Long id,String title,Genre genre, String description, double price, Status sts,Long processedBy,Timestamp processedOn,byte[] coverImageContent, String comment) {
+    public GetAllEbookDto(String firstName,String lastName,Long id,String title,Genre genre, String description, double price, Status sts,Long processedBy,Timestamp processedOn,byte[] coverImageContent, String comment, Timestamp addedOn, double revenue, double rating) {
         
     	this.id=id;
     	this.firstName=firstName;
@@ -60,9 +62,12 @@ public class GetAllEbookDto {
         this.processedBy=processedBy;
         this.processedOn=processedOn;
         this.comment = comment;
+        this.addedOn = addedOn;
+        this.revenue = revenue;
+        this.rating = rating;
     }
     
-    public GetAllEbookDto(String firstName,String lastName,Long id,String title,Genre genre, String description, double price, Status sts,byte[] coverImageContent) {
+    public GetAllEbookDto(String firstName,String lastName,Long id,String title,Genre genre, String description, double price, Status sts,byte[] coverImageContent, Timestamp addedOn, double revenue) {
         
     	this.id=id;
     	this.firstName=firstName;
@@ -73,7 +78,23 @@ public class GetAllEbookDto {
         this.price = price;
         this.coverImageContent=coverImageContent;
         this.status=sts;
-        
-    }	
+        this.addedOn = addedOn;
+        this.revenue = revenue;
+    }
+
+	public GetAllEbookDto(String firstName, String lastName, Long id, String title, Genre genre,
+			String description, double price, Status status, Timestamp processedOn,
+			Timestamp addedOn) {
+		this.id=id;
+    	this.firstName=firstName;
+       this.lastName=lastName;
+    	this.title = title;
+        this.genre = genre;
+        this.description = description;
+        this.price = price;
+        this.status=status;
+        this.addedOn = addedOn;
+        this.processedOn = processedOn;
+	}	
 
 }
